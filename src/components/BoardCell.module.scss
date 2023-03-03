@@ -1,0 +1,44 @@
+.boardCell {
+  width: calc(var(--boardSize) / 17);
+  height: calc(var(--boardSize) / 17);
+  font-size:50px;
+  position: relative;
+
+  .pieceIcon {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &.orangePiece {
+      color: #FF7518;
+    }
+
+    &.yellowPiece {
+      color: #FFBF00;
+    }
+
+    &.blackPiece {
+      color: #800020;
+    }
+
+    &.whitePiece {
+      color: #FFDEAD;
+    }
+
+    .fasIcon {
+      font-size:30px;
+      padding-top: 6px;
+    }
+  }
+
+  &.white {
+    background-color: white;
+  }
+
+  &.black {
+    background-color: black;
+  }
+}

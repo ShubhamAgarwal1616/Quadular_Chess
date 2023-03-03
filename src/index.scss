@@ -5,6 +5,16 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+
+  * {
+    box-sizing: border-box;
+  }
+
+  --boardSize: min(100vw, 100vh);
+  --orangeGradient: #FFBC34;
+  --yellowGradient: #FFFF00;
+  --blackGradient: #000;
+  --whiteGradient: #fffdd0;
 }
 
 code {
