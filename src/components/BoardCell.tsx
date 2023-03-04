@@ -32,9 +32,12 @@ export const BoardCell: FC<CellProps> = ({cell}) => {
     }
 
     return (
-        <div className={cx(styles.boardCell, {
-            [styles.black]: cell.color === CellColor.BLACK,
-            [styles.white]: cell.color === CellColor.WHITE && !cell.partOfThrone,
+        <button
+            disabled={cell.color === CellColor.INACTIVE}
+            onClick={() => {console.log('button clicked', cell.row, cell.col)}}
+            className={cx(styles.boardCell, {
+                [styles.black]: cell.color === CellColor.BLACK,
+                [styles.white]: cell.color === CellColor.WHITE && !cell.partOfThrone,
         })}>
             {cell.gradientColor && (
                 <GradientBackground cell={cell} />
@@ -44,6 +47,6 @@ export const BoardCell: FC<CellProps> = ({cell}) => {
                     {getPiece(cell)}
                 </div>
             )}
-        </div>
+        </button>
     )
 }

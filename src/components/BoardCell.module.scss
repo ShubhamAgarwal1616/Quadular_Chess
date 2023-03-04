@@ -3,11 +3,23 @@
   height: calc(var(--boardSize) / 17);
   font-size:50px;
   position: relative;
+  background-color: transparent;
+  border: none;
+
+  //@media only screen and (max-width: 764px) {
+  //  font-size:40px;
+  //}
+  //
+  //@media only screen and (max-width: 524px) {
+  //  font-size:30px;
+  //}
 
   .pieceIcon {
     position: absolute;
     width: 100%;
     height: 100%;
+    top: 0;
+    left: 0;
     display: flex;
     align-items: center;
     justify-content: center;
@@ -25,12 +37,20 @@
     }
 
     &.whitePiece {
-      color: #FFDEAD;
+      color: #e3be9b;
     }
 
     .fasIcon {
       font-size:30px;
       padding-top: 6px;
+
+      //@media only screen and (max-width: 764px) {
+      //  font-size:20px;
+      //}
+      //
+      //@media only screen and (max-width: 524px) {
+      //  font-size:15px;
+      //}
     }
   }
 
