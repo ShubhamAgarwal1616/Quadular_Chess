@@ -68,11 +68,11 @@ export enum CellColor {
     INACTIVE = 'grey',
 }
 
-export enum GradientColor {
-    GRADIENT_ORANGE = 'gradient_orange',
-    GRADIENT_YELLOW = 'gradient_yellow',
-    GRADIENT_BLACK = 'gradient_black',
-    GRADIENT_WHITE = 'gradient_white',
+export enum DomainColor {
+    ORANGE = 'orange',
+    YELLOW = 'yellow',
+    BLACK = 'black',
+    WHITE = 'white',
 }
 
 export enum PieceColor {

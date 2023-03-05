@@ -2,7 +2,7 @@ import {Cell} from "./Cell";
 import {
     BlackDomainInitialPos,
     BOARD_SIZE,
-    GradientColor,
+    DomainColor,
     OrangeDomainInitialPos,
     PieceColor,
     PieceType,
@@ -11,6 +11,7 @@ import {
     YellowDomainInitialPos
 } from "./constants";
 import {PieceFactory} from "./pieces/PieceFactory";
+import {Pawn} from "./pieces/Pawn";
 
 export class QuadularBoard {
     cells: Array<Array<Cell>> = [];
@@ -21,48 +22,48 @@ export class QuadularBoard {
 
     private initializeDomain(
         initialPos: {[key in PieceType]: number[][]},
-        gradientColor: GradientColor,
+        gradientColor: DomainColor,
         pieceColor: PieceColor,
     ) {
         for (let type in initialPos) {
             const pieceType = type as PieceType;
             initialPos[pieceType].forEach(pos => {
-                this.cells[pos[0]][pos[1]].setGradientColor(gradientColor)
+                this.cells[pos[0]][pos[1]].setDomainColor(gradientColor)
                 this.cells[pos[0]][pos[1]].setPiece(new PieceFactory().getPieceObject(pieceType, pieceColor))
             })
         }
     }
 
     private initializeOrangeDomain() {
-        this.initializeDomain(OrangeDomainInitialPos, GradientColor.GRADIENT_ORANGE, PieceColor.ORANGE);
+        this.initializeDomain(OrangeDomainInitialPos, DomainColor.ORANGE, PieceColor.ORANGE);
         const kingPos = OrangeDomainInitialPos.king[0];
-        this.cells[kingPos[0]][kingPos[1]].setAsActiveThroneCell(GradientColor.GRADIENT_ORANGE);
-        this.cells[kingPos[0]][kingPos[1] - 1].setAsInactiveThroneCell(GradientColor.GRADIENT_ORANGE, ThroneSide.Left);
-        this.cells[kingPos[0]][kingPos[1] + 1].setAsInactiveThroneCell(GradientColor.GRADIENT_ORANGE, ThroneSide.Right);
+        this.cells[kingPos[0]][kingPos[1]].setAsActiveThroneCell(DomainColor.ORANGE);
+        this.cells[kingPos[0]][kingPos[1] - 1].setAsInactiveThroneCell(DomainColor.ORANGE, ThroneSide.Left);
+        this.cells[kingPos[0]][kingPos[1] + 1].setAsInactiveThroneCell(DomainColor.ORANGE, ThroneSide.Right);
     }
 
     private initializeYellowDomain() {
-        this.initializeDomain(YellowDomainInitialPos, GradientColor.GRADIENT_YELLOW, PieceColor.YELLOW);
+        this.initializeDomain(YellowDomainInitialPos, DomainColor.YELLOW, PieceColor.YELLOW);
         const kingPos = YellowDomainInitialPos.king[0];
-        this.cells[kingPos[0]][kingPos[1]].setAsActiveThroneCell(GradientColor.GRADIENT_YELLOW);
-        this.cells[kingPos[0]][kingPos[1] - 1].setAsInactiveThroneCell(GradientColor.GRADIENT_YELLOW, ThroneSide.Right);
-        this.cells[kingPos[0]][kingPos[1] + 1].setAsInactiveThroneCell(GradientColor.GRADIENT_YELLOW, ThroneSide.Left);
+        this.cells[kingPos[0]][kingPos[1]].setAsActiveThroneCell(DomainColor.YELLOW);
+        this.cells[kingPos[0]][kingPos[1] - 1].setAsInactiveThroneCell(DomainColor.YELLOW, ThroneSide.Right);
+        this.cells[kingPos[0]][kingPos[1] + 1].setAsInactiveThroneCell(DomainColor.YELLOW, ThroneSide.Left);
     }
 
     private initializeBlackDomain() {
-        this.initializeDomain(BlackDomainInitialPos, GradientColor.GRADIENT_BLACK, PieceColor.BLACK);
+        this.initializeDomain(BlackDomainInitialPos, DomainColor.BLACK, PieceColor.BLACK);
         const kingPos = BlackDomainInitialPos.king[0];
-        this.cells[kingPos[0]][kingPos[1]].setAsActiveThroneCell(GradientColor.GRADIENT_BLACK);
-        this.cells[kingPos[0] - 1][kingPos[1]].setAsInactiveThroneCell(GradientColor.GRADIENT_BLACK, ThroneSide.Right);
-        this.cells[kingPos[0] + 1][kingPos[1]].setAsInactiveThroneCell(GradientColor.GRADIENT_BLACK, ThroneSide.Left);
+        this.cells[kingPos[0]][kingPos[1]].setAsActiveThroneCell(DomainColor.BLACK);
+        this.cells[kingPos[0] - 1][kingPos[1]].setAsInactiveThroneCell(DomainColor.BLACK, ThroneSide.Right);
+        this.cells[kingPos[0] + 1][kingPos[1]].setAsInactiveThroneCell(DomainColor.BLACK, ThroneSide.Left);
     }
 
     private initializeWhiteDomain() {
-        this.initializeDomain(WhiteDomainInitialPos, GradientColor.GRADIENT_WHITE, PieceColor.WHITE);
+        this.initializeDomain(WhiteDomainInitialPos, DomainColor.WHITE, PieceColor.WHITE);
         const kingPos = WhiteDomainInitialPos.king[0];
-        this.cells[kingPos[0]][kingPos[1]].setAsActiveThroneCell(GradientColor.GRADIENT_WHITE);
-        this.cells[kingPos[0] - 1][kingPos[1]].setAsInactiveThroneCell(GradientColor.GRADIENT_WHITE, ThroneSide.Left);
-        this.cells[kingPos[0] + 1][kingPos[1]].setAsInactiveThroneCell(GradientColor.GRADIENT_WHITE, ThroneSide.Right);
+        this.cells[kingPos[0]][kingPos[1]].setAsActiveThroneCell(DomainColor.WHITE);
+        this.cells[kingPos[0] - 1][kingPos[1]].setAsInactiveThroneCell(DomainColor.WHITE, ThroneSide.Left);
+        this.cells[kingPos[0] + 1][kingPos[1]].setAsInactiveThroneCell(DomainColor.WHITE, ThroneSide.Right);
     }
 
     private initialize() {
@@ -73,5 +74,14 @@ export class QuadularBoard {
         this.initializeYellowDomain();
         this.initializeBlackDomain();
         this.initializeWhiteDomain();
+    }
+
+    movePiece(sourceCell: Cell, targetCell: Cell) {
+        // TODO: implement pawn promotion
+        if (sourceCell.piece?.type === PieceType.Pawn) {
+            (sourceCell.piece as Pawn).setMovedToTrue();
+        }
+        targetCell.setPiece(sourceCell.piece);
+        sourceCell.setPiece(null);
     }
 }

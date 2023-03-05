@@ -37,4 +37,24 @@
   &.rightTopThrone {
     background-image: -webkit-linear-gradient(225deg, white 50%, rgba(0, 0, 0, 0.0) 50%);
   }
+
+  &.activatedOrangeCells {
+    box-shadow: 0 0 4px 4px var(--orangePiece), 0 0 4px 4px var(--orangePiece);
+    z-index: 1;
+  }
+
+  &.activatedYellowCells {
+    box-shadow: 0 0 4px 4px var(--yellowPiece), 0 0 4px 4px var(--yellowPiece);
+    z-index: 1;
+  }
+
+  &.activatedWhiteCells {
+    box-shadow: 0 0 4px 4px var(--whitePiece), 0 0 4px 4px var(--whitePiece);
+    z-index: 1;
+  }
+
+  &.activatedBlackCells {
+    box-shadow: 0 0 4px 4px var(--blackPiece), 0 0 4px 4px var(--blackPiece);
+    z-index: 1;
+  }
 }

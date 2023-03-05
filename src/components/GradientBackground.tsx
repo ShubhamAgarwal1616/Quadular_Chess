@@ -1,7 +1,7 @@
 import cx from "classnames";
 import {Cell} from "../classes/Cell";
 import {FC} from "react";
-import {GradientColor, ThroneSide} from "../classes/constants";
+import {DomainColor, ThroneSide} from "../classes/constants";
 import styles from "./GradientBackground.module.scss";
 
 interface GradientBackgroundProps {
@@ -25,14 +25,14 @@ export const GradientBackground: FC<GradientBackgroundProps> = ({cell}) => {
     }
 
     const getGradientClass = (cell: Cell): string => {
-        switch (cell.gradientColor) {
-            case GradientColor.GRADIENT_WHITE:
+        switch (cell.domainColor) {
+            case DomainColor.WHITE:
                 return getClasses(cell, styles.whiteGradient, styles.leftWhiteThroneSide, styles.rightWhiteThroneSide);
-            case GradientColor.GRADIENT_YELLOW:
+            case DomainColor.YELLOW:
                 return getClasses(cell, styles.yellowGradient, styles.leftYellowThroneSide, styles.rightYellowThroneSide);
-            case GradientColor.GRADIENT_ORANGE:
+            case DomainColor.ORANGE:
                 return getClasses(cell, styles.orangeGradient, styles.leftOrangeThroneSide, styles.rightOrangeThroneSide);
-            case GradientColor.GRADIENT_BLACK:
+            case DomainColor.BLACK:
                 return getClasses(cell, styles.blackGradient, styles.leftBlackThroneSide, styles.rightBlackThroneSide);
             default:
                 return '';

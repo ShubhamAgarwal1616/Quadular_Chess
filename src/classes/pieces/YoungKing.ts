@@ -1,5 +1,6 @@
 import {PieceColor, PieceType} from "../constants";
 import {Piece} from "./Piece";
+import {Moves} from "../moves/Moves";
 
 export class YoungKing implements Piece {
     type: PieceType = PieceType.YoungKing
@@ -7,5 +8,9 @@ export class YoungKing implements Piece {
 
     constructor(color: PieceColor) {
         this.color = color
+    }
+
+    getAllowedMoves(): Array<Moves> {
+        return [];
     }
 }

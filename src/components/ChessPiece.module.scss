@@ -9,19 +9,19 @@
   justify-content: center;
 
   &.orangePiece {
-    color: #FF4433;
+    color: var(--orangePiece);
   }
 
   &.yellowPiece {
-    color: #FFBF00;
+    color: var(--yellowPiece);
   }
 
   &.blackPiece {
-    color: #4CBB17;
+    color: var(--blackPiece);
   }
 
   &.whitePiece {
-    color: #e3be9b;
+    color: var(--whitePiece);
   }
 
   .fasIcon {

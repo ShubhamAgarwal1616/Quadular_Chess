@@ -1,5 +1,6 @@
 import {PieceColor, PieceType} from "../constants";
 import {Piece} from "./Piece";
+import {Moves} from "../moves/Moves";
 
 export class Knight implements Piece {
     type: PieceType = PieceType.Knight
@@ -7,5 +8,9 @@ export class Knight implements Piece {
 
     constructor(color: PieceColor) {
         this.color = color
+    }
+
+    getAllowedMoves(): Array<Moves> {
+        return [];
     }
 }
