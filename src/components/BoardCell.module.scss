@@ -14,46 +14,6 @@
   //  font-size:30px;
   //}
 
-  .pieceIcon {
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-
-    &.orangePiece {
-      color: #FF4433;
-    }
-
-    &.yellowPiece {
-      color: #FFBF00;
-    }
-
-    &.blackPiece {
-      color: #4CBB17;
-    }
-
-    &.whitePiece {
-      color: #e3be9b;
-    }
-
-    .fasIcon {
-      font-size:30px;
-      padding-top: 6px;
-
-      //@media only screen and (max-width: 764px) {
-      //  font-size:20px;
-      //}
-      //
-      //@media only screen and (max-width: 524px) {
-      //  font-size:15px;
-      //}
-    }
-  }
-
   &.white {
     background-color: white;
   }
