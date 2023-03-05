@@ -25,26 +25,6 @@
   @include cell_gradient(var(--whiteGradient));
 }
 
-.darkYellowGradient {
-  background-color: var(--yellowGradient);
-  opacity: 0.6;
-}
-
-.darkOrangeGradient {
-  background-color: var(--orangeGradient);
-  opacity: 0.6;
-}
-
-.darkWhiteGradient {
-  background-color: var(--whiteGradient);
-  opacity: 0.6;
-}
-
-.darkBlackGradient {
-  background-color: var(--blackGradient);
-  opacity: 0.6;
-}
-
 .leftYellowThroneSide {
   background-color: transparent;
   background-image: -webkit-linear-gradient(45deg, var(--yellowGradient) 50%, rgba(0, 0, 0, 0.0) 50%);

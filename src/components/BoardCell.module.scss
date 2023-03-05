@@ -61,4 +61,20 @@
   &.black {
     background-color: black;
   }
+
+  &.leftBottomThrone {
+    background-image: -webkit-linear-gradient(45deg, white 50%, rgba(0, 0, 0, 0.0) 50%);
+  }
+
+  &.rightBottomThrone {
+    background-image: -webkit-linear-gradient(135deg, white 50%, rgba(0, 0, 0, 0.0) 50%);
+  }
+
+  &.leftTopThrone {
+    background-image: -webkit-linear-gradient(315deg, white 50%, rgba(0, 0, 0, 0.0) 50%);
+  }
+
+  &.rightTopThrone {
+    background-image: -webkit-linear-gradient(225deg, white 50%, rgba(0, 0, 0, 0.0) 50%);
+  }
 }

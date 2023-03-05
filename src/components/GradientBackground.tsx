@@ -14,12 +14,8 @@ export const GradientBackground: FC<GradientBackgroundProps> = ({cell}) => {
         gradientClass: string,
         leftThroneClass: string,
         rightThroneClass: string,
-        darkGradientClass: string,
     ) {
         let classes = gradientClass;
-        if (cell.partOfThrone) {
-            classes = `${classes} ${darkGradientClass}`
-        }
         if (cell.throneSides === ThroneSide.Left) {
             classes = `${classes} ${leftThroneClass}`
         } else if (cell.throneSides === ThroneSide.Right) {
@@ -31,13 +27,13 @@ export const GradientBackground: FC<GradientBackgroundProps> = ({cell}) => {
     const getGradientClass = (cell: Cell): string => {
         switch (cell.gradientColor) {
             case GradientColor.GRADIENT_WHITE:
-                return getClasses(cell, styles.whiteGradient, styles.leftWhiteThroneSide, styles.rightWhiteThroneSide, styles.darkWhiteGradient);
+                return getClasses(cell, styles.whiteGradient, styles.leftWhiteThroneSide, styles.rightWhiteThroneSide);
             case GradientColor.GRADIENT_YELLOW:
-                return getClasses(cell, styles.yellowGradient, styles.leftYellowThroneSide, styles.rightYellowThroneSide, styles.darkYellowGradient);
+                return getClasses(cell, styles.yellowGradient, styles.leftYellowThroneSide, styles.rightYellowThroneSide);
             case GradientColor.GRADIENT_ORANGE:
-                return getClasses(cell, styles.orangeGradient, styles.leftOrangeThroneSide, styles.rightOrangeThroneSide, styles.darkOrangeGradient);
+                return getClasses(cell, styles.orangeGradient, styles.leftOrangeThroneSide, styles.rightOrangeThroneSide);
             case GradientColor.GRADIENT_BLACK:
-                return getClasses(cell, styles.blackGradient, styles.leftBlackThroneSide, styles.rightBlackThroneSide, styles.darkBlackGradient);
+                return getClasses(cell, styles.blackGradient, styles.leftBlackThroneSide, styles.rightBlackThroneSide);
             default:
                 return '';
         }
