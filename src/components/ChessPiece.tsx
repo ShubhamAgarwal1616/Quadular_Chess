@@ -18,7 +18,7 @@ export const ChessPiece: FC<ChessPieceProps> = ({cell}) => {
             case PieceType.King: return <>&#9818;</>
             case PieceType.Bishop: return <span className={styles.fasIcon}>&#xf43a;</span>
             case PieceType.Prince: return <span className={styles.fasIcon}>&#xf445;</span>
-            // case PieceType.YoungKing: return <>&#xf43f;</>
+            case PieceType.YoungKing: return <span className={styles.fasIcon}>&#xf43f;</span>
         }
     }
 

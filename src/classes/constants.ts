@@ -15,7 +15,7 @@ export enum PieceType {
     Rook = 'rook',
     Prince = 'prince',
     King = 'king',
-    // YoungKing = 'youngKing',
+    YoungKing = 'youngKing',
 }
 
 export const OrangeDomainInitialPos: {[key in PieceType]: number[][]} = {
@@ -26,6 +26,7 @@ export const OrangeDomainInitialPos: {[key in PieceType]: number[][]} = {
     queen: [[14, 7]],
     prince: [[14, 9]],
     king: [[15, 8]],
+    youngKing: [],
 }
 
 export const YellowDomainInitialPos: {[key in PieceType]: number[][]} = {
@@ -36,6 +37,7 @@ export const YellowDomainInitialPos: {[key in PieceType]: number[][]} = {
     queen: [[2, 9]],
     prince: [[2, 7]],
     king: [[1, 8]],
+    youngKing: [],
 }
 
 export const BlackDomainInitialPos: {[key in PieceType]: number[][]} = {
@@ -46,6 +48,7 @@ export const BlackDomainInitialPos: {[key in PieceType]: number[][]} = {
     queen: [[9, 14]],
     prince: [[7, 14]],
     king: [[8, 15]],
+    youngKing: [],
 }
 
 export const WhiteDomainInitialPos: {[key in PieceType]: number[][]} = {
@@ -56,6 +59,7 @@ export const WhiteDomainInitialPos: {[key in PieceType]: number[][]} = {
     queen: [[7, 2]],
     prince: [[9, 2]],
     king: [[8, 1]],
+    youngKing: [],
 }
 
 export enum CellColor {

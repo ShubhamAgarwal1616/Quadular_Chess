@@ -6,6 +6,7 @@ import {Rook} from "./Rook";
 import {Prince} from "./Prince";
 import {Pawn} from "./Pawn";
 import {King} from "./King";
+import {YoungKing} from "./YoungKing";
 
 export class PieceFactory {
     getPieceObject(pieceType: PieceType, color: PieceColor) {
@@ -17,6 +18,7 @@ export class PieceFactory {
             case PieceType.Prince: return new Prince(color)
             case PieceType.Pawn: return new Pawn(color)
             case PieceType.King: return new King(color)
+            case PieceType.YoungKing: return new YoungKing(color)
         }
     }
 }
