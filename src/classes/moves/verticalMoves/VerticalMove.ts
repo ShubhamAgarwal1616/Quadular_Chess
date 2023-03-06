@@ -1,6 +1,7 @@
-import {BOARD_SIZE, CellColor, PieceType} from "../../constants";
+import {BOARD_SIZE, CellColor, DomainColor, PieceType} from "../../constants";
 import {Cell} from "../../Cell";
 import {Piece} from "../../pieces/Piece";
+import {getActivatedThroneCellPos} from "../helpers";
 
 export abstract class VerticalMove {
     limit: number = BOARD_SIZE;
@@ -18,10 +19,25 @@ export abstract class VerticalMove {
     }
 
     private canCapturePiece(cell: Cell, nextCell: Cell, piece: Piece): boolean | null | undefined {
+        /* TODO: check !playerControlledColors.includes(cell.piece.color) instead of cell.piece.color !== piece.color for king kill */
         return VerticalMove.getDistance(cell, nextCell) <= this.limit && nextCell.piece && piece.type !== PieceType.Pawn && nextCell.piece.color !== piece.color;
     }
 
-    protected calculateValidMoves(piece: Piece, cell: Cell, delta: number[], cells: Array<Array<Cell>>) {
+    private static checkForThroneIn(nextCell: Cell, piece: Piece, cells: Array<Array<Cell>>): boolean | null | undefined {
+        const kingPos = getActivatedThroneCellPos(nextCell);
+        const pieceOnThrone = cells[kingPos[0]][kingPos[1]].piece;
+        /* TODO: check !playerControlledColors.includes(cell.piece.color) instead of cell.piece.color !== piece.color for king kill */
+        return piece.type === PieceType.King || (pieceOnThrone && pieceOnThrone.color !== piece.color);
+    }
+
+    private validThroneMove(cell: Cell, nextCell: Cell, piece: Piece, cells: Array<Array<Cell>>): boolean | null | undefined {
+        return piece.type !== PieceType.Pawn &&
+            VerticalMove.getDistance(cell, nextCell) <= this.limit &&
+            nextCell.partOfThrone &&
+            VerticalMove.checkForThroneIn(nextCell, piece, cells);
+    }
+
+    private calculateValidMoves(piece: Piece, cell: Cell, delta: number[], cells: Array<Array<Cell>>): Array<Cell> {
         const validPositions: Array<Cell> = []
         let nextCell = cells[cell.row + delta[0]][cell.col + delta[1]];
         while (this.isEmptyValidCell(cell, nextCell)) {
@@ -31,7 +47,45 @@ export abstract class VerticalMove {
         if (this.canCapturePiece(cell, nextCell, piece)) {
             validPositions.push(nextCell);
         }
-        // TODO: moves for IN and OUT of throne
+        if (this.validThroneMove(cell, nextCell, piece, cells)) {
+            const kingPos = getActivatedThroneCellPos(nextCell);
+            validPositions.push(cells[kingPos[0]][kingPos[1]]);
+        }
         return validPositions;
+    }
+
+    private static getCellsFacingThrone(nextCell: Cell, cells: Array<Array<Cell>>): Array<Cell> {
+        const cellsFacingThrone = [nextCell];
+        if (nextCell.domainColor === DomainColor.ORANGE || nextCell.domainColor === DomainColor.YELLOW)
+            cellsFacingThrone.push(cells[nextCell.row][nextCell.col - 1], cells[nextCell.row][nextCell.col + 1])
+        else
+            cellsFacingThrone.push(cells[nextCell.row - 1][nextCell.col], cells[nextCell.row + 1][nextCell.col])
+        return cellsFacingThrone;
+    }
+
+    private getMovesForOtherPieces(emptyCells: Array<Cell>, piece: Piece, delta: number[], cells: Array<Array<Cell>>): Array<Cell> {
+        let possiblePos: Array<Cell> = [];
+        this.limit = this.limit - 1;
+        emptyCells.forEach(cell => {
+            possiblePos = possiblePos.concat(this.calculateValidMoves(piece, cell, delta, cells))
+        })
+        return possiblePos;
+    }
+
+    protected findValidMoves(piece: Piece, cell: Cell, delta: number[], cells: Array<Array<Cell>>): Array<Cell> {
+        if (cell.partOfThrone) {
+            let nextCell = cells[cell.row + delta[0]][cell.col + delta[1]];
+            if (nextCell.domainColor && nextCell.color !== CellColor.INACTIVE) {
+                const cellsFacingThrone = VerticalMove.getCellsFacingThrone(nextCell, cells);
+                const emptyCells = cellsFacingThrone.filter(cell => !cell.piece);
+                if(piece.type === PieceType.Pawn) return emptyCells;
+                else return cellsFacingThrone.concat(this.getMovesForOtherPieces(emptyCells, piece, delta, cells));
+            } else {
+                return [];
+            }
+        } else {
+            return this.calculateValidMoves(piece, cell, delta, cells)
+        }
+
     }
 }

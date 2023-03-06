@@ -16,6 +16,6 @@ export class RightVerticalMove extends VerticalMove implements Moves {
     }
 
     getValidMoves(piece: Piece, cell: Cell, board: QuadularBoard): Array<Cell> {
-        return this.calculateValidMoves(piece, cell, RightVerticalMove.getDeltaToChangePosition(piece), board.cells);
+        return this.findValidMoves(piece, cell, RightVerticalMove.getDeltaToChangePosition(piece), board.cells);
     }
 }

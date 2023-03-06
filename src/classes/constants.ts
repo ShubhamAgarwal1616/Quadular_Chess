@@ -18,7 +18,7 @@ export enum PieceType {
     YoungKing = 'youngKing',
 }
 
-export const OrangeDomainInitialPos: {[key in PieceType]: number[][]} = {
+export const OrangeDomainInitialPos: {[key in PieceType]: Array<[number, number]>} = {
     pawn: [[12, 6],[12, 7],[12, 8],[12, 9],[12, 10]],
     rook: [[13, 6], [13,10]],
     knight: [[13, 7], [13,9]],
@@ -29,7 +29,7 @@ export const OrangeDomainInitialPos: {[key in PieceType]: number[][]} = {
     youngKing: [],
 }
 
-export const YellowDomainInitialPos: {[key in PieceType]: number[][]} = {
+export const YellowDomainInitialPos: {[key in PieceType]: Array<[number, number]>} = {
     pawn: [[4, 6],[4, 7],[4,8],[4,9],[4,10]],
     rook: [[3, 6], [3,10]],
     knight: [[3, 7], [3,9]],
@@ -40,7 +40,7 @@ export const YellowDomainInitialPos: {[key in PieceType]: number[][]} = {
     youngKing: [],
 }
 
-export const BlackDomainInitialPos: {[key in PieceType]: number[][]} = {
+export const BlackDomainInitialPos: {[key in PieceType]: Array<[number, number]>} = {
     pawn: [[10, 12],[9, 12],[8, 12],[7, 12],[6,12]],
     rook: [[10, 13], [6, 13]],
     knight: [[9, 13], [7, 13]],
@@ -51,7 +51,7 @@ export const BlackDomainInitialPos: {[key in PieceType]: number[][]} = {
     youngKing: [],
 }
 
-export const WhiteDomainInitialPos: {[key in PieceType]: number[][]} = {
+export const WhiteDomainInitialPos: {[key in PieceType]: Array<[number, number]>} = {
     pawn: [[10, 4],[9, 4],[8, 4],[7, 4],[6, 4]],
     rook: [[10, 3], [6, 3]],
     knight: [[9, 3], [7, 3]],

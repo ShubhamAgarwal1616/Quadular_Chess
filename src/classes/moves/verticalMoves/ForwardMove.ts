@@ -16,6 +16,6 @@ export class ForwardMove extends VerticalMove implements Moves {
     }
 
     getValidMoves(piece: Piece, cell: Cell, board: QuadularBoard): Array<Cell> {
-        return this.calculateValidMoves(piece, cell, ForwardMove.getDeltaToChangePosition(piece), board.cells);
+        return this.findValidMoves(piece, cell, ForwardMove.getDeltaToChangePosition(piece), board.cells);
     }
 }
