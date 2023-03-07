@@ -1,7 +1,7 @@
-import {BOARD_SIZE, CellColor, DomainColor, PieceType} from "../../constants";
+import {BOARD_SIZE, CellColor, PieceType} from "../../constants";
 import {Cell} from "../../Cell";
 import {Piece} from "../../pieces/Piece";
-import {getActivatedThroneCellPos} from "../helpers";
+import {getActivatedThroneCellPos, getAdjacentCellsInDomainDirection} from "../helpers";
 
 export abstract class VerticalMove {
     limit: number = BOARD_SIZE;
@@ -54,15 +54,6 @@ export abstract class VerticalMove {
         return validPositions;
     }
 
-    private static getCellsFacingThrone(nextCell: Cell, cells: Array<Array<Cell>>): Array<Cell> {
-        const cellsFacingThrone = [nextCell];
-        if (nextCell.domainColor === DomainColor.ORANGE || nextCell.domainColor === DomainColor.YELLOW)
-            cellsFacingThrone.push(cells[nextCell.row][nextCell.col - 1], cells[nextCell.row][nextCell.col + 1])
-        else
-            cellsFacingThrone.push(cells[nextCell.row - 1][nextCell.col], cells[nextCell.row + 1][nextCell.col])
-        return cellsFacingThrone;
-    }
-
     private getMovesForOtherPieces(emptyCells: Array<Cell>, piece: Piece, delta: number[], cells: Array<Array<Cell>>): Array<Cell> {
         let possiblePos: Array<Cell> = [];
         this.limit = this.limit - 1;
@@ -76,7 +67,7 @@ export abstract class VerticalMove {
         if (cell.partOfThrone) {
             let nextCell = cells[cell.row + delta[0]][cell.col + delta[1]];
             if (nextCell.domainColor && nextCell.color !== CellColor.INACTIVE) {
-                const cellsFacingThrone = VerticalMove.getCellsFacingThrone(nextCell, cells);
+                const cellsFacingThrone = getAdjacentCellsInDomainDirection(nextCell, cells);
                 const emptyCells = cellsFacingThrone.filter(cell => !cell.piece);
                 if(piece.type === PieceType.Pawn) return emptyCells;
                 else return cellsFacingThrone.concat(this.getMovesForOtherPieces(emptyCells, piece, delta, cells));
