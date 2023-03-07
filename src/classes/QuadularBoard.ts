@@ -28,8 +28,9 @@ export class QuadularBoard {
         for (let type in initialPos) {
             const pieceType = type as PieceType;
             initialPos[pieceType].forEach(pos => {
-                this.cells[pos[0]][pos[1]].setDomainColor(gradientColor)
-                this.cells[pos[0]][pos[1]].setPiece(new PieceFactory().getPieceObject(pieceType, pieceColor))
+                const cell = this.cells[pos[0]][pos[1]];
+                cell.setDomainColor(gradientColor);
+                cell.setPiece(new PieceFactory().getPieceObject(pieceType, pieceColor, cell.color));
             })
         }
     }

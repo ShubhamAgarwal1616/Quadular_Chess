@@ -77,6 +77,5 @@ export abstract class VerticalMove {
         } else {
             return this.calculateValidMoves(piece, cell, delta, cells)
         }
-
     }
 }
