@@ -6,14 +6,16 @@ import {CellColor, DomainColor, PieceColor, ThroneSide} from "../classes/constan
 import {GradientBackground} from "./GradientBackground";
 import {ChessPiece} from "./ChessPiece";
 import {Piece} from "../classes/pieces/Piece";
+import {Player} from "../classes/player/Player";
 
 interface CellProps {
     cell: Cell;
     selectedCell: Cell | null;
     handleCellClick: (cell: Cell) => void;
     validMoves: Array<Cell>;
+    playerInTurn: Player | null;
 }
-export const BoardCell: FC<CellProps> = ({cell, selectedCell, handleCellClick, validMoves}) => {
+export const BoardCell: FC<CellProps> = ({cell, selectedCell, handleCellClick, validMoves, playerInTurn}) => {
     const getThroneSidesClass = (cell: Cell): string => {
         if(cell.domainColor === DomainColor.YELLOW) {
             return cell.throneSides === ThroneSide.Left ? styles.leftBottomThrone : styles.rightBottomThrone;
@@ -45,7 +47,8 @@ export const BoardCell: FC<CellProps> = ({cell, selectedCell, handleCellClick, v
                 [styles.black]: cell.color === CellColor.BLACK,
                 [styles.white]: cell.color === CellColor.WHITE || (cell.partOfThrone && !cell.throneSides),
                 [getThroneSidesClass(cell)]: cell.throneSides,
-                [getActivatedClass(selectedCell?.piece)]: cell === selectedCell || validMoves.includes(cell)
+                [getActivatedClass(selectedCell?.piece)]: cell === selectedCell || validMoves.includes(cell),
+                [styles.activePieces]: !selectedCell && playerInTurn?.canControlPiece(cell.piece)
         })}>
             {cell.domainColor && (
                 <GradientBackground cell={cell} />

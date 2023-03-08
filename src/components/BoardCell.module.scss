@@ -39,22 +39,27 @@
   }
 
   &.activatedOrangeCells {
-    box-shadow: 0 0 4px 4px var(--orangePiece), 0 0 4px 4px var(--orangePiece);
+    box-shadow: 0 0 3px 3px var(--orangePiece), 0 0 3px 3px var(--orangePiece);
     z-index: 1;
   }
 
   &.activatedYellowCells {
-    box-shadow: 0 0 4px 4px var(--yellowPiece), 0 0 4px 4px var(--yellowPiece);
+    box-shadow: 0 0 3px 3px var(--yellowPiece), 0 0 3px 3px var(--yellowPiece);
     z-index: 1;
   }
 
   &.activatedWhiteCells {
-    box-shadow: 0 0 4px 4px var(--whitePiece), 0 0 4px 4px var(--whitePiece);
+    box-shadow: 0 0 3px 3px var(--whitePiece), 0 0 3px 3px var(--whitePiece);
     z-index: 1;
   }
 
   &.activatedBlackCells {
-    box-shadow: 0 0 4px 4px var(--blackPiece), 0 0 4px 4px var(--blackPiece);
+    box-shadow: 0 0 3px 3px var(--blackPiece), 0 0 3px 3px var(--blackPiece);
+    z-index: 1;
+  }
+
+  &.activePieces {
+    box-shadow: 0 0 3px 3px #0ff, 0 0 3px 3px #0ff;
     z-index: 1;
   }
 }
