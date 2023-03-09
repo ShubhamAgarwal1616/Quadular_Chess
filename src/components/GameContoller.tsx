@@ -1,5 +1,4 @@
-import {useState} from "react";
-import {QuadularBoard} from "../classes/QuadularBoard";
+import {useState, useMemo} from "react";
 import {Cell} from "../classes/Cell";
 import {BoardCell} from "./BoardCell";
 import styles from "./GameController.module.scss";
@@ -9,16 +8,17 @@ import {Player} from "../classes/player/Player";
 import {PlayerController} from "../classes/player/PlayerController";
 import {DomainColor} from "../classes/constants";
 import {GameOptions} from "./gameOptions/GameOptions";
+import {BoardController} from "../classes/BoardController";
 
 export const GameController = () => {
     const [newGame, setNewGame] = useState<boolean>(true)
-    const [board, setBoard] = useState<QuadularBoard>(new QuadularBoard())
     const [boardState, setBoardState] = useState<Array<Array<Cell>>>([])
     const [domainsInGame, setDomainsInGame] = useState<Array<DomainColor>>([])
     const [selectedCell, setSelectedCell] = useState<Cell | null>(null)
     const [validMoves, setValidMoves] = useState<Array<Cell>>([])
     const [playerInTurn, setPlayerInTurn] = useState<Player | null>(null)
     const [playerController, setPlayerController] = useState<PlayerController>(new PlayerController([]))
+    const boardController = useMemo(() => new BoardController(), []);
 
     const clearSelection = () => {
         setValidMoves([]);
@@ -26,7 +26,7 @@ export const GameController = () => {
     }
 
     function predictMoves(cell: Cell, piece: Piece) {
-        const validMoves = new MovesController().getValidMoves(piece, cell, board);
+        const validMoves = new MovesController().getValidMoves(piece, cell, boardController.board);
         setValidMoves(validMoves);
         setSelectedCell(cell);
     }
@@ -37,7 +37,7 @@ export const GameController = () => {
         } else if (selectedCell && !validMoves.includes(cell)) {
            clearSelection()
         } else if (selectedCell && validMoves.includes(cell)) {
-            board.movePiece(selectedCell, cell);
+            boardController.movePiece(selectedCell, cell);
             setPlayerInTurn(playerController.getNextPlayerInTurn());
             clearSelection()
         }
@@ -45,8 +45,8 @@ export const GameController = () => {
 
     const setUpGame = (colors: Array<DomainColor>) => {
         setDomainsInGame(colors);
-        board.setUpBoard(true, colors);
-        setBoardState(board.cells);
+        boardController.setUpBoard(true, colors);
+        setBoardState(boardController.board.cells);
         const playerController = new PlayerController(colors);
         setPlayerController(playerController);
         setPlayerInTurn(playerController.activePlayers[0]);
