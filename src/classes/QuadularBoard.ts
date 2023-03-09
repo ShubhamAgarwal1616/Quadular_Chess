@@ -93,4 +93,8 @@ export class QuadularBoard {
     promotePrince(cell: Cell, piece: Piece) {
         cell.setPiece(this.pieceFactory.getPieceObject(PieceType.YoungKing, piece.color, piece.domainPlacement, cell.color));
     }
+
+    promotePawn(cell: Cell, piece: Piece, type: PieceType) {
+        cell.setPiece(this.pieceFactory.getPieceObject(type, piece.color, piece.domainPlacement, cell.color));
+    }
 }

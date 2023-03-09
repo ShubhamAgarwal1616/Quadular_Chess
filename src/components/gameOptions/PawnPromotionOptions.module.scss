@@ -1,0 +1,25 @@
+@import "../../mixins";
+
+.backdrop {
+  @include backdrop();
+}
+
+.orange {
+  color: var(--orangePiece);
+}
+
+.white {
+  color: var(--whitePiece);
+}
+
+.black {
+  color: var(--blackPiece);
+}
+
+.yellow {
+  color: var(--yellowPiece);
+}
+
+.fasIcon {
+  font-size: 50px;
+}

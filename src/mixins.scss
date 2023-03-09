@@ -1,0 +1,13 @@
+@mixin backdrop() {
+  background-color: #000;
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 2;
+  color: #fff;
+  display: flex;
+  align-items: center;
+  flex-direction: column;
+}

@@ -54,12 +54,20 @@ export class BoardController {
     }
 
     checkPrincePromotion(cell: Cell, domainsInGame: Array<DomainColor>, player?: Player | null) {
-        if (BoardController.canApplyPromotion(cell, domainsInGame, player) && cell.piece?.type === PieceType.Prince) {
+        if (cell.piece?.type === PieceType.Prince && BoardController.canApplyPromotion(cell, domainsInGame, player)) {
             this.board.promotePrince(cell, cell.piece);
         }
     }
 
+    canPromotePawn(cell: Cell, domainsInGame: Array<DomainColor>, player?: Player | null): boolean | null | undefined {
+        return cell.piece?.type === PieceType.Pawn && BoardController.canApplyPromotion(cell, domainsInGame, player)
+    }
+
     movePiece(sourceCell: Cell, targetCell: Cell) {
         this.board.movePiece(sourceCell, targetCell)
+    }
+
+    promotePawn(cell: Cell, type: PieceType) {
+        cell.piece && this.board.promotePawn(cell, cell.piece, type);
     }
 }
