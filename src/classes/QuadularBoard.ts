@@ -13,9 +13,11 @@ import {
 } from "./constants";
 import {PieceFactory} from "./pieces/PieceFactory";
 import {Pawn} from "./pieces/Pawn";
+import {Piece} from "./pieces/Piece";
 
 export class QuadularBoard {
     cells: Array<Array<Cell>> = [];
+    pieceFactory: PieceFactory = new PieceFactory();
 
     constructor() {
         this.initializeCells();
@@ -41,7 +43,7 @@ export class QuadularBoard {
                 cell.setDomainColor(gradientColor);
                 cell.setDomainPlacement(domainPlacement);
                 if (withPieces) {
-                    cell.setPiece(new PieceFactory().getPieceObject(pieceType, pieceColor, domainPlacement, cell.color));
+                    cell.setPiece(this.pieceFactory.getPieceObject(pieceType, pieceColor, domainPlacement, cell.color));
                 }
             })
         }
@@ -86,5 +88,9 @@ export class QuadularBoard {
         }
         targetCell.setPiece(sourceCell.piece);
         sourceCell.setPiece(null);
+    }
+
+    promotePrince(cell: Cell, piece: Piece) {
+        cell.setPiece(this.pieceFactory.getPieceObject(PieceType.YoungKing, piece.color, piece.domainPlacement, cell.color));
     }
 }

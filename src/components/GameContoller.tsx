@@ -31,13 +31,18 @@ export const GameController = () => {
         setSelectedCell(cell);
     }
 
+    const movePiece = (sourceCell: Cell, targetCell: Cell) => {
+        boardController.movePiece(sourceCell, targetCell);
+        boardController.checkPrincePromotion(targetCell, domainsInGame, playerInTurn);
+    }
+
     const handleCellClick = (cell: Cell) => {
         if (cell.piece && playerInTurn?.canControlPiece(cell.piece)  && !selectedCell) {
             predictMoves(cell, cell.piece);
         } else if (selectedCell && !validMoves.includes(cell)) {
            clearSelection()
         } else if (selectedCell && validMoves.includes(cell)) {
-            boardController.movePiece(selectedCell, cell);
+            movePiece(selectedCell, cell);
             setPlayerInTurn(playerController.getNextPlayerInTurn());
             clearSelection()
         }

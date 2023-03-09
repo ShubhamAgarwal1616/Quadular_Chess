@@ -8,7 +8,7 @@ export class PlayerController {
 
     constructor(domainsInOrder: Array<DomainColor>) {
         domainsInOrder.forEach(domain => {
-            const player = new Player(getPieceColorForDomain(domain))
+            const player = new Player(domain, getPieceColorForDomain(domain))
             this.initialPlayers.push(player);
             this.activePlayers.push(player);
         })

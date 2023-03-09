@@ -1,7 +1,8 @@
 import {QuadularBoard} from "./QuadularBoard";
-import {DomainColor, DomainPlacement, MAX_PLAYER_COUNT} from "./constants";
+import {DomainColor, DomainPlacement, MAX_PLAYER_COUNT, PieceType} from "./constants";
 import {getPieceColorForDomain} from "./helpers";
 import {Cell} from "./Cell";
+import {Player} from "./player/Player";
 
 export class BoardController {
     board: QuadularBoard = new QuadularBoard();
@@ -45,6 +46,17 @@ export class BoardController {
             this.activateDomain(domainColor, placements[index], true);
         })
         return placements;
+    }
+
+    private static canApplyPromotion(cell: Cell, domainsInGame: Array<DomainColor>, player?: Player | null): boolean | null | undefined {
+        return cell.domainColor && domainsInGame.includes(cell.domainColor) && cell.piece &&
+            player?.originalDomainColor !== cell.domainColor && cell.piece.color === player?.originalPieceColor
+    }
+
+    checkPrincePromotion(cell: Cell, domainsInGame: Array<DomainColor>, player?: Player | null) {
+        if (BoardController.canApplyPromotion(cell, domainsInGame, player) && cell.piece?.type === PieceType.Prince) {
+            this.board.promotePrince(cell, cell.piece);
+        }
     }
 
     movePiece(sourceCell: Cell, targetCell: Cell) {

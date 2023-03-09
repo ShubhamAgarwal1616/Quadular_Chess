@@ -1,12 +1,14 @@
-import {PieceColor} from "../constants";
+import {DomainColor, PieceColor} from "../constants";
 import {Piece} from "../pieces/Piece";
 
 export class Player {
     originalPieceColor: PieceColor = PieceColor.ORANGE;
+    originalDomainColor: DomainColor = DomainColor.ORANGE;
     controlOverPieces: Array<PieceColor> = [];
 
-    constructor(color: PieceColor) {
+    constructor(domainColor: DomainColor, color: PieceColor) {
         this.originalPieceColor = color;
+        this.originalDomainColor = domainColor;
         this.controlOverPieces.push(color);
     }
 
