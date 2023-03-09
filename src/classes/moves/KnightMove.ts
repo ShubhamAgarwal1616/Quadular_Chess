@@ -2,7 +2,7 @@ import {Moves} from "./Moves";
 import {Piece} from "../pieces/Piece";
 import {Cell} from "../Cell";
 import {QuadularBoard} from "../QuadularBoard";
-import {BOARD_SIZE, CellColor} from "../constants";
+import {BOARD_SIZE, CellColor, PieceColor} from "../constants";
 import {getActivatedThroneCellPos, getAdjacentCellsInDomainDirection} from "./moveHelpers";
 
 export class KnightMove implements Moves {
@@ -16,16 +16,20 @@ export class KnightMove implements Moves {
         return delta.some(d => originalCell.row + d[0] === cell.row && originalCell.col + d[1] === cell.col);
     }
 
-    private static isValidCell(piece: Piece, originalCell: Cell, cell: Cell): boolean {
-        /* TODO: check !playerControlledColors.includes(cell.piece.color) instead of cell.piece.color !== piece.color for king kill */
+    private static isValidCell(originalCell: Cell, cell: Cell, piecesInControl: Array<PieceColor>): boolean {
         if (cell.partOfThrone) {
-            return !!cell.piece && cell.piece.color !== piece.color;
+            return !!cell.piece && !piecesInControl.includes(cell.piece.color);
         }
-        return (!cell.piece || cell.piece.color !== piece.color) && cell.color !== CellColor.INACTIVE &&
+        return (!cell.piece || !piecesInControl.includes(cell.piece.color)) && cell.color !== CellColor.INACTIVE &&
             !this.isDiagonalNeighbourCell(originalCell, cell)
     }
 
-    getValidCells(piece: Piece, originalCell: Cell, possibleCells: Array<Cell>, cells: Array<Array<Cell>>): Array<Cell> {
+    getValidCells(
+        originalCell: Cell,
+        possibleCells: Array<Cell>,
+        cells: Array<Array<Cell>>,
+        piecesInControl: Array<PieceColor>,
+    ): Array<Cell> {
         const mappedCells = possibleCells.map(cell => {
             if (cell.partOfThrone) {
                 const kingPos = getActivatedThroneCellPos(cell);
@@ -34,7 +38,7 @@ export class KnightMove implements Moves {
                 return cell;
             }
         })
-        return mappedCells.filter(cell => KnightMove.isValidCell(piece, originalCell, cell));
+        return mappedCells.filter(cell => KnightMove.isValidCell(originalCell, cell, piecesInControl));
     }
 
     private getPossibleCells(deltaPositions: number[][], cell: Cell, board: QuadularBoard) {
@@ -43,7 +47,12 @@ export class KnightMove implements Moves {
             .map(pos => board.cells[pos[0]][pos[1]]);
     }
 
-    getValidMoves(piece: Piece, cell: Cell, board: QuadularBoard): Array<Cell> {
+    getValidMoves(
+        piece: Piece,
+        cell: Cell,
+        board: QuadularBoard,
+        piecesInControl: Array<PieceColor>,
+    ): Array<Cell> {
         const deltaPositions = [[1, -2], [-1, -2], [1, 2], [-1, 2], [-2, 1], [-2, -1], [2, 1], [2, -1]];
         let possibleCells: Cell[] = [];
         if (cell.partOfThrone) {
@@ -53,6 +62,6 @@ export class KnightMove implements Moves {
         } else {
             possibleCells = this.getPossibleCells(deltaPositions, cell, board);
         }
-        return this.getValidCells(piece, cell, possibleCells, board.cells);
+        return this.getValidCells(cell, possibleCells, board.cells, piecesInControl);
     }
 }

@@ -82,7 +82,6 @@ export class QuadularBoard {
     }
 
     movePiece(sourceCell: Cell, targetCell: Cell) {
-        // TODO: implement pawn promotion
         if (sourceCell.piece?.type === PieceType.Pawn) {
             (sourceCell.piece as Pawn).setMovedToTrue();
         }

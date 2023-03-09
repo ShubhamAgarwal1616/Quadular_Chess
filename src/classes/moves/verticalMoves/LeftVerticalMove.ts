@@ -1,5 +1,5 @@
 import {Moves} from "../Moves";
-import {DomainPlacement} from "../../constants";
+import {DomainPlacement, PieceColor} from "../../constants";
 import {Cell} from "../../Cell";
 import {QuadularBoard} from "../../QuadularBoard";
 import {Piece} from "../../pieces/Piece";
@@ -15,7 +15,7 @@ export class LeftVerticalMove extends VerticalMove implements Moves {
         }
     }
 
-    getValidMoves(piece: Piece, cell: Cell, board: QuadularBoard): Array<Cell> {
-        return this.findValidMoves(piece, cell, LeftVerticalMove.getDeltaToChangePosition(piece), board.cells);
+    getValidMoves(piece: Piece, cell: Cell, board: QuadularBoard, piecesInControl: Array<PieceColor>): Array<Cell> {
+        return this.findValidMoves(piece, cell, LeftVerticalMove.getDeltaToChangePosition(piece), board.cells, piecesInControl);
     }
 }

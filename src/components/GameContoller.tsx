@@ -27,8 +27,8 @@ export const GameController = () => {
         setSelectedCell(null);
     }
 
-    function predictMoves(cell: Cell, piece: Piece) {
-        const validMoves = new MovesController().getValidMoves(piece, cell, boardController.board);
+    function predictMoves(cell: Cell, piece: Piece, player: Player) {
+        const validMoves = new MovesController().getValidMoves(piece, cell, boardController.board, player.controlOverPieces, domainsInGame);
         setValidMoves(validMoves);
         setSelectedCell(cell);
     }
@@ -50,7 +50,7 @@ export const GameController = () => {
 
     const handleCellClick = (cell: Cell) => {
         if (cell.piece && playerInTurn?.canControlPiece(cell.piece)  && !selectedCell) {
-            predictMoves(cell, cell.piece);
+            predictMoves(cell, cell.piece, playerInTurn);
         } else if (selectedCell && !validMoves.includes(cell)) {
            clearSelection()
         } else if (selectedCell && validMoves.includes(cell)) {

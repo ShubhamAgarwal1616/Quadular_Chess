@@ -65,6 +65,7 @@ export class BoardController {
 
     movePiece(sourceCell: Cell, targetCell: Cell) {
         this.board.movePiece(sourceCell, targetCell)
+        // TODO: implement king killing
     }
 
     promotePawn(cell: Cell, type: PieceType) {
