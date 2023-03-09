@@ -30,7 +30,7 @@ export const PawnPromotionOptions: FC<PawnPromotionOptionsProps> = ({piece, prom
         <div className={styles.backdrop}>
             <h2>Promote To:</h2>
             {promotionOptions.map(option => (
-                <OptionButton handleClick={() => promotePawn(option.val)}>
+                <OptionButton key={option.val} handleClick={() => promotePawn(option.val)}>
                     {option.icon}
                 </OptionButton>
             ))}

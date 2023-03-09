@@ -1,6 +1,7 @@
-import {DomainColor} from "../constants";
+import {DomainColor, PieceColor} from "../constants";
 import {Player} from "./Player";
 import {getPieceColorForDomain} from "../helpers";
+import {Piece} from "../pieces/Piece";
 
 export class PlayerController {
     initialPlayers: Array<Player> = [];
@@ -22,5 +23,14 @@ export class PlayerController {
 
     getActivePlayerCount() {
         return this.activePlayers.length;
+    }
+
+    originalPlayerInGame(piece: Piece) {
+        return this.activePlayers.some(player => player.originalPieceColor === piece.color)
+    }
+
+    deactivatePlayer(originalColor: PieceColor) {
+        this.activePlayers = this.activePlayers.filter(player => player.originalPieceColor !== originalColor);
+        this.activePlayers[0].addColorInControl(originalColor);
     }
 }

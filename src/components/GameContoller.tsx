@@ -1,4 +1,4 @@
-import {useState, useMemo} from "react";
+import {useMemo, useState} from "react";
 import {Cell} from "../classes/Cell";
 import {BoardCell} from "./BoardCell";
 import styles from "./GameController.module.scss";
@@ -41,6 +41,12 @@ export const GameController = () => {
     }
 
     const movePiece = (sourceCell: Cell, targetCell: Cell) => {
+        if (targetCell.piece?.type === PieceType.King && playerController.originalPlayerInGame(targetCell.piece)) {
+            if (boardController.canReplaceWithYoungKing(targetCell.piece))
+                boardController.replaceWithYoungKing(targetCell.piece);
+            else
+                playerController.deactivatePlayer(targetCell.piece.color);
+        }
         boardController.movePiece(sourceCell, targetCell);
         boardController.checkPrincePromotion(targetCell, domainsInGame, playerInTurn);
         if (boardController.canPromotePawn(targetCell, domainsInGame, playerInTurn)) {

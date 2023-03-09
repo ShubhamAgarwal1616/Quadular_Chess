@@ -11,7 +11,7 @@ export const PlayerCountOptions: FC<PlayerCountOptionsProps> = ({setPlayerCount}
         <>
             <h2>Select Total Players</h2>
             {playerCountOptions.map(option => (
-                <OptionButton handleClick={() => setPlayerCount(option)}>{option}</OptionButton>
+                <OptionButton key={option} handleClick={() => setPlayerCount(option)}>{option}</OptionButton>
             ))}
         </>
     )

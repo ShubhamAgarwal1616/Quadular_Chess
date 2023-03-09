@@ -20,6 +20,7 @@ export const ColorOptions: FC<ColorOptionsProps> = ({selectedColors, addDomainCo
             <h2>Select Colours</h2>
             {colorOptions.map(option => (
                 <OptionButton
+                    key={option.val}
                     handleClick={() => addDomainColor(option.val)}
                     className={selectedColors.includes(option.val) ? styles.selected : ''}
                     disabled={selectedColors.includes(option.val)}

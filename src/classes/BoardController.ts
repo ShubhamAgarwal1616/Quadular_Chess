@@ -3,6 +3,7 @@ import {DomainColor, DomainPlacement, MAX_PLAYER_COUNT, PieceType} from "./const
 import {getPieceColorForDomain} from "./helpers";
 import {Cell} from "./Cell";
 import {Player} from "./player/Player";
+import {Piece} from "./pieces/Piece";
 
 export class BoardController {
     board: QuadularBoard = new QuadularBoard();
@@ -61,6 +62,14 @@ export class BoardController {
 
     canPromotePawn(cell: Cell, domainsInGame: Array<DomainColor>, player?: Player | null): boolean | null | undefined {
         return cell.piece?.type === PieceType.Pawn && BoardController.canApplyPromotion(cell, domainsInGame, player)
+    }
+
+    canReplaceWithYoungKing(piece: Piece) {
+        return this.board.getYoungKingCellForReplacement(piece);
+    }
+
+    replaceWithYoungKing(piece: Piece) {
+        this.board.getYoungKingCellForReplacement(piece)?.setPiece(piece);
     }
 
     movePiece(sourceCell: Cell, targetCell: Cell) {

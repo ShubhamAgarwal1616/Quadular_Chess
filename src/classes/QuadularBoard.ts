@@ -96,4 +96,13 @@ export class QuadularBoard {
     promotePawn(cell: Cell, piece: Piece, type: PieceType) {
         cell.setPiece(this.pieceFactory.getPieceObject(type, piece.color, piece.domainPlacement, cell.color));
     }
+
+    getYoungKingCellForReplacement(piece: Piece): Cell | undefined {
+        for (let row of this.cells) {
+            for (let cell of row) {
+                if (cell.piece && cell.piece.type === PieceType.YoungKing && cell.piece.color === piece.color)
+                    return cell;
+            }
+        }
+    }
 }
