@@ -29,7 +29,7 @@ export const GameController = () => {
     }
 
     const handleCellClick = (cell: Cell) => {
-        if (cell.piece && playerInTurn?.canControlPiece(cell.piece) && !selectedCell) {
+        if (cell.piece  && !selectedCell) {
             predictMoves(cell, cell.piece);
         } else if (selectedCell && !validMoves.includes(cell)) {
            clearSelection()

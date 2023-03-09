@@ -1,4 +1,4 @@
-import {PieceColor, PieceType} from "../constants";
+import {DomainPlacement, PieceColor, PieceType} from "../constants";
 import {Piece} from "./Piece";
 import {Moves} from "../moves/Moves";
 import {LeftUpwardDiagonalMove} from "../moves/diagonalMoves/LeftUpwardDiagonalMove";
@@ -13,9 +13,11 @@ import {BackwardMove} from "../moves/verticalMoves/BackwardMove";
 export class Queen implements Piece {
     type: PieceType = PieceType.Queen
     color: PieceColor = PieceColor.ORANGE
+    domainPlacement: DomainPlacement = DomainPlacement.Left
 
-    constructor(color: PieceColor) {
-        this.color = color
+    constructor(color: PieceColor, domainPlacement: DomainPlacement) {
+        this.color = color;
+        this.domainPlacement = domainPlacement;
     }
 
     getAllowedMoves(): Array<Moves> {

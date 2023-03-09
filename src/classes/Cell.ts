@@ -1,5 +1,6 @@
-import {CellColor, DomainColor, ThroneSide} from "./constants";
+import {CellColor, DomainColor, DomainPlacement, ThroneSide} from "./constants";
 import {Piece} from "./pieces/Piece";
+import {dom} from "@fortawesome/fontawesome-svg-core";
 
 export class Cell {
     row: number;
@@ -9,6 +10,7 @@ export class Cell {
     piece?: Piece | null;
     partOfThrone: boolean = false;
     throneSides?: ThroneSide;
+    domainPlacement?: DomainPlacement;
 
     constructor(row: number, col: number) {
         this.row = row;
@@ -27,14 +29,19 @@ export class Cell {
         this.color = (this.row + this.col) % 2 === 1 ? CellColor.BLACK : CellColor.WHITE;
     }
 
-    setAsInactiveThroneCell(color: DomainColor, throneSide?: ThroneSide) {
+    setDomainPlacement(domainPlacement: DomainPlacement) {
+        this.domainPlacement = domainPlacement;
+    }
+
+    setAsInactiveThroneCell(color: DomainColor, domainPlacement: DomainPlacement, throneSide?: ThroneSide) {
         this.domainColor = color
         this.partOfThrone = true;
         this.throneSides = throneSide;
+        this.domainPlacement = domainPlacement;
     }
 
-    setAsActiveThroneCell(color: DomainColor) {
+    setAsActiveThroneCell(color: DomainColor, domainPlacement: DomainPlacement) {
         this.color = CellColor.WHITE;
-        this.setAsInactiveThroneCell(color);
+        this.setAsInactiveThroneCell(color, domainPlacement);
     }
 }

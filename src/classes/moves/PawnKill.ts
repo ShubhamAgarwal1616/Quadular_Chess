@@ -2,21 +2,21 @@ import {Moves} from "./Moves";
 import {Piece} from "../pieces/Piece";
 import {Cell} from "../Cell";
 import {QuadularBoard} from "../QuadularBoard";
-import {PieceColor} from "../constants";
+import {DomainPlacement} from "../constants";
 import {getActivatedThroneCellPos} from "./helpers";
 
 export class PawnKill implements Moves {
 
     private static getNormalKillCells(piece: Piece, cell: Cell, cells: Array<Array<Cell>>): Array<Cell> {
         let positions: Array<Cell> = [];
-        switch (piece.color) {
-            case PieceColor.ORANGE:
+        switch (piece.domainPlacement) {
+            case DomainPlacement.Bottom:
                 positions = [cells[cell.row - 1][cell.col - 1], cells[cell.row - 1][cell.col + 1]];
                 break;
-            case PieceColor.WHITE:
+            case DomainPlacement.Left:
                 positions = [cells[cell.row + 1][cell.col + 1], cells[cell.row - 1][cell.col + 1]];
                 break;
-            case PieceColor.YELLOW:
+            case DomainPlacement.Top:
                 positions = [cells[cell.row + 1][cell.col + 1], cells[cell.row + 1][cell.col - 1]];
                 break;
             default:
@@ -24,7 +24,7 @@ export class PawnKill implements Moves {
         }
         // while coming out of throne pawn can kill the piece on mid-row square as well
         if (cell.partOfThrone) {
-            if (piece.color === PieceColor.ORANGE || piece.color === PieceColor.YELLOW)
+            if (piece.domainPlacement === DomainPlacement.Bottom || piece.domainPlacement === DomainPlacement.Top)
                 positions.push(cells[cell.row][cell.col - 1], cells[cell.row][cell.col + 1])
             else
                 positions.push(cells[cell.row - 1][cell.col], cells[cell.row + 1][cell.col])
@@ -33,10 +33,10 @@ export class PawnKill implements Moves {
     }
 
     private static getDomainKillCells(piece: Piece, cell: Cell, cells: Array<Array<Cell>>): Array<Cell> {
-        switch (piece.color) {
-            case PieceColor.YELLOW: return [cells[cell.row - 1][cell.col - 1], cells[cell.row - 1][cell.col + 1]];
-            case PieceColor.BLACK: return [cells[cell.row + 1][cell.col + 1], cells[cell.row - 1][cell.col + 1]];
-            case PieceColor.ORANGE: return [cells[cell.row + 1][cell.col + 1], cells[cell.row + 1][cell.col - 1]];
+        switch (piece.domainPlacement) {
+            case DomainPlacement.Top: return [cells[cell.row - 1][cell.col - 1], cells[cell.row - 1][cell.col + 1]];
+            case DomainPlacement.Right: return [cells[cell.row + 1][cell.col + 1], cells[cell.row - 1][cell.col + 1]];
+            case DomainPlacement.Bottom: return [cells[cell.row + 1][cell.col + 1], cells[cell.row + 1][cell.col - 1]];
             default: return [cells[cell.row - 1][cell.col - 1], cells[cell.row + 1][cell.col - 1]];
         }
     }

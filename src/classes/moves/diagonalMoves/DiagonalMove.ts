@@ -1,6 +1,6 @@
 import {Piece} from "../../pieces/Piece";
 import {Cell} from "../../Cell";
-import {BOARD_SIZE, CellColor, DomainColor, PieceType} from "../../constants";
+import {BOARD_SIZE, CellColor, DomainPlacement, PieceType} from "../../constants";
 import {getActivatedThroneCellPos} from "../helpers";
 import {Bishop} from "../../pieces/Bishop";
 
@@ -49,10 +49,10 @@ export abstract class DiagonalMove {
     }
 
     getCellInFrontOfThrone(cell: Cell, cells: Array<Array<Cell>>): Cell {
-        switch (cell.domainColor) {
-            case DomainColor.YELLOW: return cells[cell.row + 1][cell.col];
-            case DomainColor.ORANGE: return cells[cell.row - 1][cell.col];
-            case DomainColor.BLACK: return cells[cell.row][cell.col - 1];
+        switch (cell.domainPlacement) {
+            case DomainPlacement.Top: return cells[cell.row + 1][cell.col];
+            case DomainPlacement.Bottom: return cells[cell.row - 1][cell.col];
+            case DomainPlacement.Right: return cells[cell.row][cell.col - 1];
             default: return cells[cell.row][cell.col + 1];
         }
     }

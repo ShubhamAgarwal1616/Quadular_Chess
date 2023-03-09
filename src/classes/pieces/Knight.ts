@@ -1,4 +1,4 @@
-import {PieceColor, PieceType} from "../constants";
+import {DomainPlacement, PieceColor, PieceType} from "../constants";
 import {Piece} from "./Piece";
 import {Moves} from "../moves/Moves";
 import {KnightMove} from "../moves/KnightMove";
@@ -6,9 +6,11 @@ import {KnightMove} from "../moves/KnightMove";
 export class Knight implements Piece {
     type: PieceType = PieceType.Knight
     color: PieceColor = PieceColor.ORANGE
+    domainPlacement: DomainPlacement = DomainPlacement.Left
 
-    constructor(color: PieceColor) {
-        this.color = color
+    constructor(color: PieceColor, domainPlacement: DomainPlacement) {
+        this.color = color;
+        this.domainPlacement = domainPlacement;
     }
 
     getAllowedMoves(): Array<Moves> {

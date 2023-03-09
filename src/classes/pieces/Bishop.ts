@@ -1,4 +1,4 @@
-import {CellColor, PieceColor, PieceType} from "../constants";
+import {CellColor, DomainPlacement, PieceColor, PieceType} from "../constants";
 import {Piece} from "./Piece";
 import {Moves} from "../moves/Moves";
 import {LeftUpwardDiagonalMove} from "../moves/diagonalMoves/LeftUpwardDiagonalMove";
@@ -10,10 +10,12 @@ export class Bishop implements Piece {
     type: PieceType = PieceType.Bishop
     color: PieceColor = PieceColor.ORANGE
     originalCellColor: CellColor = CellColor.WHITE
+    domainPlacement: DomainPlacement = DomainPlacement.Left
 
-    constructor(color: PieceColor, originalCellColor: CellColor) {
+    constructor(color: PieceColor, originalCellColor: CellColor, domainPlacement: DomainPlacement) {
         this.color = color;
         this.originalCellColor = originalCellColor;
+        this.domainPlacement = domainPlacement;
     }
 
     getAllowedMoves(): Array<Moves> {

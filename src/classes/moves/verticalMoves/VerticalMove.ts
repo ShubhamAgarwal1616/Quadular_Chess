@@ -26,6 +26,7 @@ export abstract class VerticalMove {
     private static checkForThroneIn(nextCell: Cell, piece: Piece, cells: Array<Array<Cell>>): boolean | null | undefined {
         const kingPos = getActivatedThroneCellPos(nextCell);
         const pieceOnThrone = cells[kingPos[0]][kingPos[1]].piece;
+        // console.log('testing', kingPos, pieceOnThrone, nextCell);
         /* TODO: check !playerControlledColors.includes(cell.piece.color) instead of cell.piece.color !== piece.color for king kill */
         return piece.type === PieceType.King || (pieceOnThrone && pieceOnThrone.color !== piece.color);
     }
