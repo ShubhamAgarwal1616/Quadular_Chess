@@ -54,9 +54,10 @@ export class BoardController {
             player?.originalDomainColor !== cell.domainColor && cell.piece.color === player?.originalPieceColor
     }
 
-    checkPrincePromotion(cell: Cell, domainsInGame: Array<DomainColor>, player?: Player | null) {
+    checkPrincePromotion(cell: Cell, domainsInGame: Array<DomainColor>, player?: Player | null): boolean | undefined{
         if (cell.piece?.type === PieceType.Prince && BoardController.canApplyPromotion(cell, domainsInGame, player)) {
             this.board.promotePrince(cell, cell.piece);
+            return true;
         }
     }
 

@@ -1,16 +1,9 @@
-.board {
-  width: var(--boardSize);
-  height: var(--boardSize);
-  display: flex;
-  flex-wrap: wrap;
-}
-
 .gameContainer {
   background-image: url('../assets/images/background_1.jpg');
   background-size: cover;
   background-repeat: no-repeat;
   display: flex;
-  justify-content: center;
+  justify-content: flex-start;
   align-items: center;
   position: relative;
 }

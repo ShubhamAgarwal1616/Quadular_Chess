@@ -1,6 +1,5 @@
 import {useMemo, useState} from "react";
 import {Cell} from "../classes/Cell";
-import {BoardCell} from "./BoardCell";
 import styles from "./GameController.module.scss";
 import {MovesController} from "../classes/moves/MovesController";
 import {Piece} from "../classes/pieces/Piece";
@@ -10,6 +9,8 @@ import {DomainColor, PieceType} from "../classes/constants";
 import {GameOptions} from "./gameOptions/GameOptions";
 import {BoardController} from "../classes/BoardController";
 import {PawnPromotionOptions} from "./gameOptions/PawnPromotionOptions";
+import {Board} from "./Board";
+import {Message} from "./Message";
 
 export const GameController = () => {
     const [newGame, setNewGame] = useState<boolean>(true)
@@ -20,6 +21,7 @@ export const GameController = () => {
     const [validMoves, setValidMoves] = useState<Array<Cell>>([])
     const [playerInTurn, setPlayerInTurn] = useState<Player | null>(null)
     const [playerController, setPlayerController] = useState<PlayerController>(new PlayerController([]))
+    const [message, setMessage] = useState<string | null>(null);
     const boardController = useMemo(() => new BoardController(), []);
 
     const clearSelection = () => {
@@ -40,6 +42,15 @@ export const GameController = () => {
         }
     }
 
+    const checkWinner = () => {
+        if (playerController.getActivePlayerCount() === 1) {
+            setMessage(`${playerInTurn?.name} Wins`)
+            setPlayerInTurn(null);
+        } else {
+            setPlayerInTurn(playerController.getNextPlayerInTurn());
+        }
+    }
+
     const movePiece = (sourceCell: Cell, targetCell: Cell) => {
         if (targetCell.piece?.type === PieceType.King && playerController.originalPlayerInGame(targetCell.piece)) {
             if (boardController.canReplaceWithYoungKing(targetCell.piece))
@@ -48,7 +59,7 @@ export const GameController = () => {
                 playerController.deactivatePlayer(targetCell.piece.color);
         }
         boardController.movePiece(sourceCell, targetCell);
-        boardController.checkPrincePromotion(targetCell, domainsInGame, playerInTurn);
+        boardController.checkPrincePromotion(targetCell, domainsInGame, playerInTurn) && setMessage('Prince Promoted');
         if (boardController.canPromotePawn(targetCell, domainsInGame, playerInTurn)) {
             setTargetCell(targetCell);
         }
@@ -61,8 +72,8 @@ export const GameController = () => {
            clearSelection()
         } else if (selectedCell && validMoves.includes(cell)) {
             movePiece(selectedCell, cell);
-            setPlayerInTurn(playerController.getNextPlayerInTurn());
-            clearSelection()
+            checkWinner();
+            clearSelection();
         }
     }
 
@@ -80,20 +91,14 @@ export const GameController = () => {
         <div className={styles.gameContainer}>
             {newGame && <GameOptions setUpGame={setUpGame} />}
             {targetCell && <PawnPromotionOptions piece={targetCell.piece} promotePawn={promotePawn} />}
-            <div className={styles.board}>
-                {boardState.map(row => {
-                    return row.map(cell => (
-                        <BoardCell
-                            key={`${cell.row}-${cell.col}`}
-                            cell={cell}
-                            selectedCell={selectedCell}
-                            handleCellClick={handleCellClick}
-                            validMoves={validMoves}
-                            playerInTurn={playerInTurn}
-                        />
-                    ))
-                })}
-            </div>
+            <Board
+                boardState={boardState}
+                selectedCell={selectedCell}
+                handleCellClick={handleCellClick}
+                validMoves={validMoves}
+                playerInTurn={playerInTurn}
+            />
+            {message && <Message message={message} setMessage={setMessage} />}
         </div>
     )
 }
