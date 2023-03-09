@@ -1,7 +1,7 @@
 import {BOARD_SIZE, CellColor, PieceType} from "../../constants";
 import {Cell} from "../../Cell";
 import {Piece} from "../../pieces/Piece";
-import {getActivatedThroneCellPos, getAdjacentCellsInDomainDirection} from "../helpers";
+import {getActivatedThroneCellPos, getAdjacentCellsInDomainDirection} from "../moveHelpers";
 
 export abstract class VerticalMove {
     limit: number = BOARD_SIZE;

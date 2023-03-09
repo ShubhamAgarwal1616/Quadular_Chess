@@ -1,5 +1,6 @@
 export const BOARD_SIZE = 17;
 export const DOMAIN_SIZE = 5;
+export const MAX_PLAYER_COUNT = 4;
 
 export const enum ThroneSide {
     Left = 'left',

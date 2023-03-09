@@ -48,7 +48,7 @@ export const BoardCell: FC<CellProps> = ({cell, selectedCell, handleCellClick, v
                 [styles.white]: cell.color === CellColor.WHITE || (cell.partOfThrone && !cell.throneSides),
                 [getThroneSidesClass(cell)]: cell.throneSides,
                 [getActivatedClass(selectedCell?.piece)]: cell === selectedCell || validMoves.includes(cell),
-                // [styles.activePieces]: !selectedCell && playerInTurn?.canControlPiece(cell.piece)
+                [styles.activePieces]: !selectedCell && playerInTurn?.canControlPiece(cell.piece)
         })}>
             {cell.domainColor && (
                 <GradientBackground cell={cell} />

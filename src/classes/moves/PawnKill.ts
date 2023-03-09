@@ -3,7 +3,7 @@ import {Piece} from "../pieces/Piece";
 import {Cell} from "../Cell";
 import {QuadularBoard} from "../QuadularBoard";
 import {DomainPlacement} from "../constants";
-import {getActivatedThroneCellPos} from "./helpers";
+import {getActivatedThroneCellPos} from "./moveHelpers";
 
 export class PawnKill implements Moves {
 

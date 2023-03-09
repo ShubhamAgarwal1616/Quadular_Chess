@@ -1,4 +1,4 @@
-import {CellColor, DomainColor, DomainPlacement, ThroneSide} from "./constants";
+import {BOARD_SIZE, CellColor, DOMAIN_SIZE, DomainColor, DomainPlacement, ThroneSide} from "./constants";
 import {Piece} from "./pieces/Piece";
 import {dom} from "@fortawesome/fontawesome-svg-core";
 
@@ -15,7 +15,7 @@ export class Cell {
     constructor(row: number, col: number) {
         this.row = row;
         this.col = col;
-        if (row >= 5 && row <= 11 && col >= 5 && col <= 11) {
+        if (row >= DOMAIN_SIZE && row < (BOARD_SIZE - DOMAIN_SIZE) && col >= DOMAIN_SIZE && col < (BOARD_SIZE - DOMAIN_SIZE)) {
             this.color = (row + col) % 2 === 1 ? CellColor.BLACK : CellColor.WHITE;
         }
     }

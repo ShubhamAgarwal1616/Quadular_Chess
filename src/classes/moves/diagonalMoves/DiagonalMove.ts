@@ -1,7 +1,7 @@
 import {Piece} from "../../pieces/Piece";
 import {Cell} from "../../Cell";
 import {BOARD_SIZE, CellColor, DomainPlacement, PieceType} from "../../constants";
-import {getActivatedThroneCellPos} from "../helpers";
+import {getActivatedThroneCellPos} from "../moveHelpers";
 import {Bishop} from "../../pieces/Bishop";
 
 export abstract class DiagonalMove {

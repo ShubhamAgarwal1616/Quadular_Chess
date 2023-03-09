@@ -3,7 +3,7 @@ import {Piece} from "../pieces/Piece";
 import {Cell} from "../Cell";
 import {QuadularBoard} from "../QuadularBoard";
 import {BOARD_SIZE, CellColor} from "../constants";
-import {getActivatedThroneCellPos, getAdjacentCellsInDomainDirection} from "./helpers";
+import {getActivatedThroneCellPos, getAdjacentCellsInDomainDirection} from "./moveHelpers";
 
 export class KnightMove implements Moves {
     private static isInsideBoard(pos: number[]): boolean {

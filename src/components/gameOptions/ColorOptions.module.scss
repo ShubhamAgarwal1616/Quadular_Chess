@@ -1,0 +1,25 @@
+.orange {
+  color: var(--orangePiece);
+  font-size: 70px;
+}
+
+.white {
+  color: var(--whitePiece);
+  font-size: 70px;
+}
+
+.black {
+  color: var(--blackPiece);
+  font-size: 70px;
+}
+
+.yellow {
+  color: var(--yellowPiece);
+  font-size: 70px;
+}
+
+.selected {
+  border: none;
+  box-shadow: 0 0 8px 8px #0ff, 0 0 4px 4px #0ff;
+  z-index: 4;
+}
