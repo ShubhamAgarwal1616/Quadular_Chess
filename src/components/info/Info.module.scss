@@ -1,0 +1,26 @@
+.container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: calc(var(--boardSize) / 17);
+  flex-grow: 1;
+
+  @media only screen and (max-width: 1200px) {
+    margin-top: 0;
+  }
+
+  h2 {
+    background: -webkit-linear-gradient(#ddfcfb, #e2d1c3);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+  }
+}
+
+.timers {
+  display: flex;
+  flex-wrap: wrap;
+
+  @media only screen and (max-width: 1200px) {
+    max-width: 100%;
+  }
+}

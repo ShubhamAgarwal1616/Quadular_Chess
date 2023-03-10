@@ -1,5 +1,5 @@
 import {FC} from "react";
-import winnerImage from '../assets/images/winner.gif';
+import winnerImage from '../../assets/images/winner.gif';
 import styles from './Message.module.scss';
 
 interface MessageProps {
@@ -15,7 +15,7 @@ export const Message: FC<MessageProps> = ({message, setMessage}) => {
 
     return (
         <div className={styles.container}>
-            <h1 className={styles.header}>{message}</h1>
+            <h2 className={styles.header}>{message}</h2>
             {message.toLowerCase().includes('wins') && (
                 <img src={winnerImage}/>
             )}

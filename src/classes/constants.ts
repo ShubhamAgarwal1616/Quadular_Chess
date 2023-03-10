@@ -88,3 +88,5 @@ export enum PieceColor {
     ORANGE = 'orange',
     YELLOW = 'yellow',
 }
+
+export const TimerOptionsInMinutes = [2, 5, 10, 15, 20, 30, 45, 60]

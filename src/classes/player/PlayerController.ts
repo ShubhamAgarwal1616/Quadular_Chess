@@ -7,9 +7,9 @@ export class PlayerController {
     initialPlayers: Array<Player> = [];
     activePlayers: Array<Player> = [];
 
-    constructor(domainsInOrder: Array<DomainColor>) {
+    constructor(domainsInOrder: Array<DomainColor>, timeInMinutes: number) {
         domainsInOrder.forEach((domain, idx) => {
-            const player = new Player(`Player ${idx + 1}`, domain, getPieceColorForDomain(domain))
+            const player = new Player(`Player ${idx + 1}`, domain, getPieceColorForDomain(domain), timeInMinutes);
             this.initialPlayers.push(player);
             this.activePlayers.push(player);
         })
@@ -32,5 +32,9 @@ export class PlayerController {
     deactivatePlayer(originalColor: PieceColor) {
         this.activePlayers = this.activePlayers.filter(player => player.originalPieceColor !== originalColor);
         this.activePlayers[0].addColorInControl(originalColor);
+    }
+
+    suspendPlayer(player: Player) {
+        this.activePlayers = this.activePlayers.filter(activePlayer => player !== activePlayer);
     }
 }

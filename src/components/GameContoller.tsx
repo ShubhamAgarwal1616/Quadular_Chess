@@ -10,7 +10,7 @@ import {GameOptions} from "./gameOptions/GameOptions";
 import {BoardController} from "../classes/BoardController";
 import {PawnPromotionOptions} from "./gameOptions/PawnPromotionOptions";
 import {Board} from "./Board";
-import {Message} from "./Message";
+import {Info} from "./info/Info";
 
 export const GameController = () => {
     const [newGame, setNewGame] = useState<boolean>(true)
@@ -20,7 +20,7 @@ export const GameController = () => {
     const [targetCell, setTargetCell] = useState<Cell | null>(null)
     const [validMoves, setValidMoves] = useState<Array<Cell>>([])
     const [playerInTurn, setPlayerInTurn] = useState<Player | null>(null)
-    const [playerController, setPlayerController] = useState<PlayerController>(new PlayerController([]))
+    const [playerController, setPlayerController] = useState<PlayerController>(new PlayerController([], 0))
     const [message, setMessage] = useState<string | null>(null);
     const boardController = useMemo(() => new BoardController(), []);
 
@@ -42,12 +42,12 @@ export const GameController = () => {
         }
     }
 
-    const rotatePlayerTurn = () => {
+    const rotatePlayerTurn = (player: Player) => {
         if (playerController.getActivePlayerCount() === 1) {
-            setMessage(`${playerInTurn?.name} Wins`)
+            setMessage(`${playerController.activePlayers[0].name} Wins`)
             setPlayerInTurn(null);
         } else {
-            setPlayerInTurn(playerController.getNextPlayerInTurn());
+            setPlayerInTurn(player);
         }
     }
 
@@ -72,19 +72,26 @@ export const GameController = () => {
            clearSelection()
         } else if (selectedCell && validMoves.includes(cell)) {
             movePiece(selectedCell, cell);
-            rotatePlayerTurn();
+            rotatePlayerTurn(playerController.getNextPlayerInTurn());
             clearSelection();
         }
     }
 
-    const setUpGame = (colors: Array<DomainColor>) => {
+    const setUpGame = (colors: Array<DomainColor>, timer: number) => {
         setDomainsInGame(colors);
         boardController.setUpBoard(true, colors);
         setBoardState(boardController.board.cells);
-        const playerController = new PlayerController(colors);
+        const playerController = new PlayerController(colors, timer);
         setPlayerController(playerController);
         setPlayerInTurn(playerController.activePlayers[0]);
         setNewGame(false);
+    }
+
+    const suspendPlayer = (player: Player) => {
+        const nextPlayer = playerController.getNextPlayerInTurn();
+        playerController.suspendPlayer(player);
+        setMessage(`${player.name} timer expired`);
+        rotatePlayerTurn(nextPlayer);
     }
 
     return (
@@ -98,7 +105,13 @@ export const GameController = () => {
                 validMoves={validMoves}
                 playerInTurn={playerInTurn}
             />
-            {message && <Message message={message} setMessage={setMessage} />}
+            <Info
+                playerController={playerController}
+                playerInTurn={playerInTurn}
+                message={message}
+                setMessage={setMessage}
+                suspendPlayer={suspendPlayer}
+            />
         </div>
     )
 }

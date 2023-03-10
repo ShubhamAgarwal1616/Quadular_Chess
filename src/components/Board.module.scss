@@ -3,4 +3,5 @@
   height: var(--boardSize);
   display: flex;
   flex-wrap: wrap;
+  flex-shrink: 0;
 }
