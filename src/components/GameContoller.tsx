@@ -42,7 +42,7 @@ export const GameController = () => {
         }
     }
 
-    const checkWinner = () => {
+    const rotatePlayerTurn = () => {
         if (playerController.getActivePlayerCount() === 1) {
             setMessage(`${playerInTurn?.name} Wins`)
             setPlayerInTurn(null);
@@ -72,7 +72,7 @@ export const GameController = () => {
            clearSelection()
         } else if (selectedCell && validMoves.includes(cell)) {
             movePiece(selectedCell, cell);
-            checkWinner();
+            rotatePlayerTurn();
             clearSelection();
         }
     }
