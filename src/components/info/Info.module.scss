@@ -10,7 +10,7 @@
   }
 
   h2 {
-    background: -webkit-linear-gradient(#ddfcfb, #e2d1c3);
+    background: -webkit-linear-gradient(#ffecd2, #fcb69f);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
   }
@@ -19,6 +19,7 @@
 .timers {
   display: flex;
   flex-wrap: wrap;
+
 
   @media only screen and (max-width: 1200px) {
     max-width: 100%;

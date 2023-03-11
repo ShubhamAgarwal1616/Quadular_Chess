@@ -1,14 +1,16 @@
 import {FC, useEffect, useRef, useState} from 'react';
 import {Player} from "../../classes/player/Player";
 import styles from './TimerDisplay.module.scss';
+import cx from "classnames";
 
 interface TimerProps {
     player: Player;
     playerInTurn: Player | null;
     suspendPlayer: (player: Player) => void;
+    inactive: boolean;
 }
 
-export const TimerDisplay: FC<TimerProps> = ({player, playerInTurn, suspendPlayer}) => {
+export const TimerDisplay: FC<TimerProps> = ({player, playerInTurn, suspendPlayer, inactive}) => {
     const ref = useRef<NodeJS.Timer | null>(null);
     const [timer, setTimer] = useState('00:00');
 
@@ -46,7 +48,10 @@ export const TimerDisplay: FC<TimerProps> = ({player, playerInTurn, suspendPlaye
     }, [player, playerInTurn]);
 
     return (
-        <div className={styles.timerInfo}>
+        <div className={cx(styles.timerInfo, {
+            [styles.activeTimer]: player === playerInTurn,
+            [styles.inActiveTimer]: inactive,
+        })}>
             <h2>{player.name}</h2>
             <h2>{timer}</h2>
         </div>

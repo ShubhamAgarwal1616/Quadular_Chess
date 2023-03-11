@@ -18,7 +18,13 @@ export const Info: FC<InfoProps> = ({playerController, playerInTurn, setMessage,
         <div className={styles.container}>
             <div className={styles.timers}>
                 {playerController.initialPlayers.map(player => (
-                    <TimerDisplay key={player.name} player={player} playerInTurn={playerInTurn} suspendPlayer={suspendPlayer} />
+                    <TimerDisplay
+                        key={player.name}
+                        player={player}
+                        playerInTurn={playerInTurn}
+                        suspendPlayer={suspendPlayer}
+                        inactive={!playerController.activePlayers.includes(player)}
+                    />
                 ))}
             </div>
             {message && <Message message={message} setMessage={setMessage} />}
