@@ -1,11 +1,11 @@
-import {Moves} from "../Moves";
+import {CommonMoves} from "../Moves";
 import {DomainPlacement, PieceColor} from "../../constants";
 import {Cell} from "../../Cell";
 import {QuadularBoard} from "../../QuadularBoard";
 import {Piece} from "../../pieces/Piece";
 import {VerticalMove} from "./VerticalMove";
 
-export class ForwardMove extends VerticalMove implements Moves {
+export class ForwardMove extends VerticalMove implements CommonMoves {
     private static getDeltaToChangePosition(piece: Piece): number[] {
         switch (piece.domainPlacement) {
             case DomainPlacement.Bottom: return [-1, 0];

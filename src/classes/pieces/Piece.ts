@@ -1,9 +1,9 @@
 import {DomainPlacement, PieceColor, PieceType} from "../constants";
-import {Moves} from "../moves/Moves";
+import {CommonMoves, EnPassantMove} from "../moves/Moves";
 
 export interface Piece {
     type: PieceType;
     color: PieceColor;
     domainPlacement: DomainPlacement;
-    getAllowedMoves(): Array<Moves>
+    getAllowedMoves(): Array<CommonMoves | EnPassantMove>
 }

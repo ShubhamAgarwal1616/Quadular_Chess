@@ -1,11 +1,11 @@
-import {Moves} from "./Moves";
+import {CommonMoves} from "./Moves";
 import {Piece} from "../pieces/Piece";
 import {Cell} from "../Cell";
 import {QuadularBoard} from "../QuadularBoard";
 import {DomainColor, DomainPlacement, PieceColor} from "../constants";
 import {getActivatedThroneCellPos} from "./moveHelpers";
 
-export class PawnKill implements Moves {
+export class PawnKill implements CommonMoves {
 
     private static getNormalKillCells(piece: Piece, cell: Cell, cells: Array<Array<Cell>>): Array<Cell> {
         let positions: Array<Cell>;

@@ -1,6 +1,6 @@
 import {DomainPlacement, PieceColor, PieceType} from "../constants";
 import {Piece} from "./Piece";
-import {Moves} from "../moves/Moves";
+import {CommonMoves} from "../moves/Moves";
 import {ForwardMove} from "../moves/verticalMoves/ForwardMove";
 import {LeftVerticalMove} from "../moves/verticalMoves/LeftVerticalMove";
 import {RightVerticalMove} from "../moves/verticalMoves/RightVerticalMove";
@@ -16,7 +16,7 @@ export class Rook implements Piece {
         this.domainPlacement = domainPlacement;
     }
 
-    getAllowedMoves(): Array<Moves> {
+    getAllowedMoves(): Array<CommonMoves> {
         return [new ForwardMove(), new LeftVerticalMove(), new RightVerticalMove(), new BackwardMove()];
     }
 }

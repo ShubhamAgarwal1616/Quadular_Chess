@@ -1,11 +1,11 @@
-import {Moves} from "./Moves";
+import {CommonMoves} from "./Moves";
 import {Piece} from "../pieces/Piece";
 import {Cell} from "../Cell";
 import {QuadularBoard} from "../QuadularBoard";
 import {BOARD_SIZE, CellColor, PieceColor} from "../constants";
 import {getActivatedThroneCellPos, getAdjacentCellsInDomainDirection} from "./moveHelpers";
 
-export class KnightMove implements Moves {
+export class KnightMove implements CommonMoves {
     private static isInsideBoard(pos: number[]): boolean {
         return pos[0] >= 0 && pos[1] >= 0 && pos[0] < BOARD_SIZE && pos[1] < BOARD_SIZE;
     }

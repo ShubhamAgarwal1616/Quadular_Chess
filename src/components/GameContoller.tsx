@@ -23,6 +23,7 @@ export const GameController = () => {
     const [playerController, setPlayerController] = useState<PlayerController>(new PlayerController([], 0))
     const [message, setMessage] = useState<string | null>(null);
     const boardController = useMemo(() => new BoardController(), []);
+    const movesController = useMemo(() => new MovesController(), []);
 
     const clearSelection = () => {
         setValidMoves([]);
@@ -30,7 +31,7 @@ export const GameController = () => {
     }
 
     function predictMoves(cell: Cell, piece: Piece, player: Player) {
-        const validMoves = new MovesController().getValidMoves(piece, cell, boardController.board, player.controlOverPieces, domainsInGame);
+        const validMoves = movesController.getValidMoves(piece, cell, boardController.board, player.controlOverPieces, domainsInGame);
         setValidMoves(validMoves);
         setSelectedCell(cell);
     }
@@ -51,7 +52,25 @@ export const GameController = () => {
         }
     }
 
+    const checkForEnPassant = (sourceCell: Cell, targetCell: Cell, piece?: Piece | null) => {
+        if (piece) {
+            if (piece.type === PieceType.Pawn) {
+                if (boardController.canBeEnPassant(piece, sourceCell, targetCell)) {
+                    movesController.setInEnPassantMap(piece, targetCell, boardController.board.cells, playerInTurn?.controlOverPieces)
+                } else if (boardController.isPlayingEnPassant(piece, sourceCell, targetCell)) {
+                    const cell = movesController.getPiecePositionBeingEnPassant(piece, targetCell, boardController.board.cells);
+                    if (cell) {
+                        cell.setPiece(null);
+                        setMessage('En Passant');
+                    }
+                }
+            }
+            movesController.deleteFromEnPassantMap(playerInTurn?.controlOverPieces);
+        }
+    }
+
     const movePiece = (sourceCell: Cell, targetCell: Cell) => {
+        checkForEnPassant(sourceCell, targetCell, sourceCell.piece);
         if (targetCell.piece?.type === PieceType.King && playerController.originalPlayerInGame(targetCell.piece)) {
             if (boardController.canReplaceWithYoungKing(targetCell.piece))
                 boardController.replaceWithYoungKing(targetCell.piece);

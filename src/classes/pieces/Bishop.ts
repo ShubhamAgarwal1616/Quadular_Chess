@@ -1,6 +1,6 @@
 import {CellColor, DomainPlacement, PieceColor, PieceType} from "../constants";
 import {Piece} from "./Piece";
-import {Moves} from "../moves/Moves";
+import {CommonMoves} from "../moves/Moves";
 import {LeftUpwardDiagonalMove} from "../moves/diagonalMoves/LeftUpwardDiagonalMove";
 import {RightUpwardDiagonalMove} from "../moves/diagonalMoves/RightUpwardDiagonalMove";
 import {RightDownwardDiagonalMove} from "../moves/diagonalMoves/RightDownwardDiagonalMove";
@@ -18,7 +18,7 @@ export class Bishop implements Piece {
         this.domainPlacement = domainPlacement;
     }
 
-    getAllowedMoves(): Array<Moves> {
+    getAllowedMoves(): Array<CommonMoves> {
         return [
             new LeftUpwardDiagonalMove(),
             new RightUpwardDiagonalMove(),

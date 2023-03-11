@@ -4,6 +4,7 @@ import {getPieceColorForDomain} from "./helpers";
 import {Cell} from "./Cell";
 import {Player} from "./player/Player";
 import {Piece} from "./pieces/Piece";
+import {Pawn} from "./pieces/Pawn";
 
 export class BoardController {
     board: QuadularBoard = new QuadularBoard();
@@ -54,6 +55,10 @@ export class BoardController {
             player?.originalDomainColor !== cell.domainColor && cell.piece.color === player?.originalPieceColor
     }
 
+    getVerticalDistance(sourceCell: Cell, targetCell: Cell): number {
+        return Math.abs(sourceCell.row - targetCell.row + sourceCell.col - targetCell.col);
+    }
+
     checkPrincePromotion(cell: Cell, domainsInGame: Array<DomainColor>, player?: Player | null): boolean | undefined{
         if (cell.piece?.type === PieceType.Prince && BoardController.canApplyPromotion(cell, domainsInGame, player)) {
             this.board.promotePrince(cell, cell.piece);
@@ -80,5 +85,14 @@ export class BoardController {
 
     promotePawn(cell: Cell, type: PieceType) {
         cell.piece && this.board.promotePawn(cell, cell.piece, type);
+    }
+
+    canBeEnPassant(piece: Piece, sourceCell: Cell, targetCell: Cell) {
+        return piece instanceof Pawn && !piece.hasMovedBefore && this.getVerticalDistance(sourceCell, targetCell) === 2;
+    }
+
+    isPlayingEnPassant(piece: Piece, sourceCell: Cell, targetCell: Cell) {
+        return piece.type === PieceType.Pawn && !targetCell.piece &&
+            sourceCell.row !== targetCell.row && sourceCell.col !== targetCell.col
     }
 }

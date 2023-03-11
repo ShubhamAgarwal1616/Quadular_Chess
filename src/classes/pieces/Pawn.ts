@@ -1,10 +1,11 @@
 import {DomainPlacement, PieceColor, PieceType} from "../constants";
 import {Piece} from "./Piece";
-import {Moves} from "../moves/Moves";
+import {CommonMoves, EnPassantMove as EnPassantMoveInterface} from "../moves/Moves";
 import {ForwardMove} from "../moves/verticalMoves/ForwardMove";
 import {LeftVerticalMove} from "../moves/verticalMoves/LeftVerticalMove";
 import {RightVerticalMove} from "../moves/verticalMoves/RightVerticalMove";
 import {PawnKill} from "../moves/PawnKill";
+import {EnPassantMove} from "../moves/EnPasaantMove";
 
 export class Pawn implements Piece {
     type: PieceType = PieceType.Pawn
@@ -17,11 +18,17 @@ export class Pawn implements Piece {
         this.domainPlacement = domainPlacement;
     }
 
-    getAllowedMoves(): Array<Moves> {
+    getAllowedMoves(): Array<CommonMoves | EnPassantMoveInterface> {
         if (!this.hasMovedBefore) {
             return [new ForwardMove(2), new PawnKill()]
         }
-        return [new ForwardMove(1), new LeftVerticalMove(1), new RightVerticalMove(1), new PawnKill()];
+        return [
+            new ForwardMove(1),
+            new LeftVerticalMove(1),
+            new RightVerticalMove(1),
+            new PawnKill(),
+            new EnPassantMove(),
+        ];
     }
 
     setMovedToTrue() {
