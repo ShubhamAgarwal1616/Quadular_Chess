@@ -14,16 +14,26 @@ interface InfoProps {
 }
 
 export const Info: FC<InfoProps> = ({playerController, playerInTurn, setMessage, message, suspendPlayer}) => {
+    const getTimerClass = (idx: number): string => {
+        switch (idx) {
+            case 0: return styles.timer_1;
+            case 1: return styles.timer_2;
+            case 2: return styles.timer_3;
+            default: return styles.timer_4;
+        }
+    }
+
     return (
         <div className={styles.container}>
             <div className={styles.timers}>
-                {playerController.initialPlayers.map(player => (
+                {playerController.initialPlayers.map((player, idx) => (
                     <TimerDisplay
                         key={player.name}
                         player={player}
                         playerInTurn={playerInTurn}
                         suspendPlayer={suspendPlayer}
                         inactive={!playerController.activePlayers.includes(player)}
+                        className={getTimerClass(idx)}
                     />
                 ))}
             </div>

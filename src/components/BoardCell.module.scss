@@ -1,3 +1,12 @@
+@mixin activated-cell($color) {
+  box-shadow: 0 0 3px 3px $color, 0 0 3px 3px $color;
+  z-index: 1;
+
+  @media only screen and (max-width: 524px) {
+    box-shadow: 0 0 2px 2px $color, 0 0 2px 2px $color;
+  }
+}
+
 .boardCell {
   width: calc(var(--boardSize) / 17);
   height: calc(var(--boardSize) / 17);
@@ -6,13 +15,13 @@
   background-color: transparent;
   border: none;
 
-  //@media only screen and (max-width: 764px) {
-  //  font-size:40px;
-  //}
-  //
-  //@media only screen and (max-width: 524px) {
-  //  font-size:30px;
-  //}
+  @media only screen and (max-width: 764px) {
+    font-size:40px;
+  }
+
+  @media only screen and (max-width: 524px) {
+    font-size:20px;
+  }
 
   &.white {
     background-color: white;
@@ -39,27 +48,27 @@
   }
 
   &.activatedOrangeCells {
-    box-shadow: 0 0 3px 3px var(--orangePiece), 0 0 3px 3px var(--orangePiece);
-    z-index: 1;
+    @include activated-cell(var(--orangePiece));
   }
 
   &.activatedYellowCells {
-    box-shadow: 0 0 3px 3px var(--yellowPiece), 0 0 3px 3px var(--yellowPiece);
-    z-index: 1;
+    @include activated-cell(var(--yellowPiece));
   }
 
   &.activatedWhiteCells {
-    box-shadow: 0 0 3px 3px var(--whitePiece), 0 0 3px 3px var(--whitePiece);
-    z-index: 1;
+    @include activated-cell(var(--whitePiece));
   }
 
   &.activatedBlackCells {
-    box-shadow: 0 0 3px 3px var(--blackPiece), 0 0 3px 3px var(--blackPiece);
-    z-index: 1;
+    @include activated-cell(var(--blackPiece));
   }
 
   &.activePieces {
     box-shadow: 0 0 3px 3px #0ff, 0 0 3px 3px #0ff;
     z-index: 1;
+
+    @media only screen and (max-width: 524px) {
+      box-shadow: 0 0 2px 2px #0ff;
+    }
   }
 }

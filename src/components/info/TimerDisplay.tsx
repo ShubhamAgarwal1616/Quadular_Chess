@@ -8,9 +8,10 @@ interface TimerProps {
     playerInTurn: Player | null;
     suspendPlayer: (player: Player) => void;
     inactive: boolean;
+    className: string;
 }
 
-export const TimerDisplay: FC<TimerProps> = ({player, playerInTurn, suspendPlayer, inactive}) => {
+export const TimerDisplay: FC<TimerProps> = ({player, playerInTurn, suspendPlayer, inactive, className}) => {
     const ref = useRef<NodeJS.Timer | null>(null);
     const [timer, setTimer] = useState('00:00');
 
@@ -48,7 +49,7 @@ export const TimerDisplay: FC<TimerProps> = ({player, playerInTurn, suspendPlaye
     }, [player, playerInTurn]);
 
     return (
-        <div className={cx(styles.timerInfo, {
+        <div className={cx(styles.timerInfo, className, {
             [styles.activeTimer]: player === playerInTurn,
             [styles.inActiveTimer]: inactive,
         })}>
