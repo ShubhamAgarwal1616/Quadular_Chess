@@ -19,6 +19,10 @@ body {
   --blackPiece: #4cbb17;
   --orangePiece: #ff4433;
   --yellowPiece: #ffbf00;
+  --orangeImageFilter: invert(42%) sepia(46%) saturate(5623%) hue-rotate(341deg) brightness(100%) contrast(102%);
+  --yellowImageFilter: invert(73%) sepia(60%) saturate(1126%) hue-rotate(357deg) brightness(98%) contrast(107%);
+  --blackImageFilter: invert(51%) sepia(97%) saturate(581%) hue-rotate(70deg) brightness(91%) contrast(93%);
+  --whiteImageFilter: invert(84%) sepia(11%) saturate(987%) hue-rotate(343deg) brightness(95%) contrast(86%);
 }
 
 code {

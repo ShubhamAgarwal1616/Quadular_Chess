@@ -1,9 +1,11 @@
 import {OptionButton} from "./OptionButton";
 import styles from "./PawnPromotionOptions.module.scss";
-import cx from "classnames";
 import {PieceColor, PieceType} from "../../classes/constants";
 import {Piece} from "../../classes/pieces/Piece";
 import {FC} from "react";
+import knight from "../../assets/images/knight.png";
+import Bishop from "../../assets/images/bishop.png";
+import Queen from "../../assets/images/queen.png";
 
 interface PawnPromotionOptionsProps {
     piece?: Piece | null;
@@ -21,9 +23,9 @@ export const PawnPromotionOptions: FC<PawnPromotionOptionsProps> = ({piece, prom
     }
 
     const promotionOptions = [
-        {icon: <span className={cx(getColorClass())}>&#9822;</span>, val: PieceType.Knight},
-        {icon: <span className={cx('fas', styles.fasIcon, getColorClass())}>&#xf43a;</span>, val: PieceType.Bishop},
-        {icon: <span className={cx(getColorClass())}>&#9819;</span>, val: PieceType.Queen},
+        {icon: <img src={knight} className={getColorClass()} alt='knight'/>, val: PieceType.Knight},
+        {icon: <img src={Bishop} className={getColorClass()} alt='bishop'/>, val: PieceType.Bishop},
+        {icon: <img src={Queen} className={getColorClass()} alt='queen'/>, val: PieceType.Queen},
     ]
 
     return (

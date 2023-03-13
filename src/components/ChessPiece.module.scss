@@ -8,32 +8,24 @@
   align-items: center;
   justify-content: center;
 
+  img {
+    width: calc(var(--boardSize) / 24);
+    height: calc(var(--boardSize) / 24);
+  }
+
   &.orangePiece {
-    color: var(--orangePiece);
+    filter: var(--orangeImageFilter);
   }
 
   &.yellowPiece {
-    color: var(--yellowPiece);
+    filter:  var(--yellowImageFilter);
   }
 
   &.blackPiece {
-    color: var(--blackPiece);
+    filter:  var(--blackImageFilter);
   }
 
   &.whitePiece {
-    color: var(--whitePiece);
-  }
-
-  .fasIcon {
-    font-size:30px;
-    padding-top: 6px;
-
-    @media only screen and (max-width: 764px) {
-      font-size: 20px;
-    }
-
-    @media only screen and (max-width: 524px) {
-      font-size: 16px;
-    }
+    filter:  var(--whiteImageFilter);
   }
 }

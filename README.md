@@ -44,7 +44,7 @@ The colored squares represents a domain. A domain is not active if pieces are no
 - No Piece can jump over other piece or kill their own ally pieces.
 - Information about each piece is given as below:
 
-### Pawn:
+### Pawn: <img src="./src/assets/images/pawn.png"  width="30" height="30">
 
   - a `Pawn` can move freely in forward, left and right direction by one square away from his own domain.
   - a `Pawn` can kill diagonally only.
@@ -53,41 +53,41 @@ The colored squares represents a domain. A domain is not active if pieces are no
   - In case of 2-3 players a pawn does not get promoted if it reaches a domain that was not part of the game.
   - a `pawn` can move diagonally towards his domain when he is entering in his opponents domain and killing an opponents piece.
 
-### Prince:
+### Prince: <img src="./src/assets/images/prince.png"  width="30" height="30">
 
 - a `Prince` can move freely in all directions by two squares.
 - a `Prince` gets promoted to `Young King` when it reaches an opponent domain.
 - a `prince` can kill in any direction.
 
-### Young King:
+### Young King: <img src="./src/assets/images/youngKing.png"  width="30" height="30">
 
 - a `Young King` can move freely in all directions by any number of squares.
 - a `Young King` gets promoted to `Kng` if the `King` gets killed.
 - a `Young King` can kill in any direction.
 - a `Young King` is not present initially in the game and comes on board only when `Prince` gets promoted.
 
-### Queen:
+### Queen: <img src="./src/assets/images/queen.png"  width="30" height="30">
 
 - a `Queen` can move freely in all directions by any number of squares.
 - a `Queen` can kill in any direction.
 
-### Bishop:
+### Bishop: <img src="./src/assets/images/bishop.png"  width="30" height="30">
 
 - a `Bishop` can move freely in both diagonal directions by any number of squares.
 - a `Bishop` can kill in any diagonal direction.
 - while coming out of throne a `Bishop` can move on same coloured squares as it was on while entering the throne.
 
-### Knight:
+### Knight: <img src="./src/assets/images/knight.png"  width="30" height="30">
 
 - a `Knight` can move L shaped in any direction.
 - a `Knight` can kill in any direction.
 
-### Rook:
+### Rook: <img src="./src/assets/images/rook.png"  width="30" height="30">
 
 - a `Rook` can move freely in forward, left, right and bottom directions by any number of squares.
 - a `Rook` can kill in any vertical direction.
 
-### King:
+### King: <img src="./src/assets/images/king.png"  width="30" height="30">
 
 - a `King` can move freely in all directions by one square.
 - a `King` can kill in all direction.

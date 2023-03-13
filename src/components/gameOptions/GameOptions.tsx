@@ -32,7 +32,7 @@ export const GameOptions: FC<GameOptionsProps> = ({setUpGame}) => {
         <div className={styles.backdrop}>
             <h1 className={styles.heading}>Quadular</h1>
             {!playerCount && <PlayerCountOptions setPlayerCount={selectPlayerCount} />}
-            {colors.length < playerCount && <ColorOptions selectedColors={colors} addDomainColor={addDomainColor} />}
+            {colors.length < playerCount && <ColorOptions count={playerCount} selectedColors={colors} addDomainColor={addDomainColor} />}
             {colors.length === playerCount && playerCount > 0 && <TimerOptions setTimer={setTimer} />}
         </div>
     )

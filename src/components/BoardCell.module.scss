@@ -10,18 +10,9 @@
 .boardCell {
   width: calc(var(--boardSize) / 17);
   height: calc(var(--boardSize) / 17);
-  font-size:50px;
   position: relative;
   background-color: transparent;
   border: none;
-
-  @media only screen and (max-width: 764px) {
-    font-size:40px;
-  }
-
-  @media only screen and (max-width: 524px) {
-    font-size:20px;
-  }
 
   &.white {
     background-color: white;

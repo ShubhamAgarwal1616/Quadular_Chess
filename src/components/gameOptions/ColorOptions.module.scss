@@ -1,21 +1,17 @@
 .orange {
-  color: var(--orangePiece);
-  font-size: 70px;
+  filter: var(--orangeImageFilter);
 }
 
 .white {
-  color: var(--whitePiece);
-  font-size: 70px;
+  filter: var(--whiteImageFilter);
 }
 
 .black {
-  color: var(--blackPiece);
-  font-size: 70px;
+  filter: var(--blackImageFilter);
 }
 
 .yellow {
-  color: var(--yellowPiece);
-  font-size: 70px;
+  filter: var(--yellowImageFilter);
 }
 
 .selected {

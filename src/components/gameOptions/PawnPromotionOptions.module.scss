@@ -5,21 +5,17 @@
 }
 
 .orange {
-  color: var(--orangePiece);
+  filter: var(--orangeImageFilter);
 }
 
 .white {
-  color: var(--whitePiece);
+  filter: var(--whiteImageFilter);
 }
 
 .black {
-  color: var(--blackPiece);
+  filter: var(--blackImageFilter);
 }
 
 .yellow {
-  color: var(--yellowPiece);
-}
-
-.fasIcon {
-  font-size: 50px;
+  filter: var(--yellowImageFilter);
 }
