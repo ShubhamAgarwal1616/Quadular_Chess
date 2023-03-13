@@ -12,6 +12,7 @@ import {PawnPromotionOptions} from "./gameOptions/PawnPromotionOptions";
 import {Board} from "./Board";
 import {Info} from "./info/Info";
 import {useWindowSize} from "../hooks/useWindowSize";
+import {SoundController} from "../classes/SoundController";
 
 export const GameController = () => {
     const windowWidth = useWindowSize();
@@ -49,6 +50,7 @@ export const GameController = () => {
         if (playerController.getActivePlayerCount() === 1) {
             setMessage(`${playerController.activePlayers[0].name} Wins`)
             setPlayerInTurn(null);
+            SoundController.playWinningSound();
         } else {
             setPlayerInTurn(player);
         }
@@ -65,19 +67,27 @@ export const GameController = () => {
                         cell.setPiece(null);
                         setMessage('En Passant');
                     }
+                    SoundController.playCaptureSound();
                 }
             }
             movesController.deleteFromEnPassantMap(playerInTurn?.controlOverPieces);
         }
     }
 
-    const movePiece = (sourceCell: Cell, targetCell: Cell) => {
-        checkForEnPassant(sourceCell, targetCell, sourceCell.piece);
+    function checkKingKill(targetCell: Cell) {
         if (targetCell.piece?.type === PieceType.King && playerController.originalPlayerInGame(targetCell.piece)) {
             if (boardController.canReplaceWithYoungKing(targetCell.piece))
                 boardController.replaceWithYoungKing(targetCell.piece);
             else
                 playerController.deactivatePlayer(targetCell.piece.color);
+        }
+    }
+
+    const movePiece = (sourceCell: Cell, targetCell: Cell) => {
+        checkForEnPassant(sourceCell, targetCell, sourceCell.piece);
+        checkKingKill(targetCell);
+        if (playerController.activePlayers.length > 1) {
+            targetCell.piece ? SoundController.playCaptureSound() : SoundController.playMoveSound();
         }
         boardController.movePiece(sourceCell, targetCell);
         boardController.checkPrincePromotion(targetCell, domainsInGame, playerInTurn) && setMessage('Prince Promoted');
@@ -102,6 +112,7 @@ export const GameController = () => {
         setDomainsInGame(colors);
         boardController.setUpBoard(true, colors);
         setBoardState(boardController.board.cells);
+        SoundController.playSetUpSound();
         const playerController = new PlayerController(colors, timer);
         setPlayerController(playerController);
         setPlayerInTurn(playerController.activePlayers[0]);
@@ -111,8 +122,9 @@ export const GameController = () => {
     const suspendPlayer = (player: Player) => {
         const nextPlayer = playerController.getNextPlayerInTurn();
         playerController.suspendPlayer(player);
-        setMessage(`${player.name} timer expired`);
+        SoundController.playTimerExpireSound();
         rotatePlayerTurn(nextPlayer);
+        if (playerController.activePlayers.length > 1) SoundController.playTimerExpireSound();
     }
 
     return (
