@@ -11,8 +11,10 @@ import {BoardController} from "../classes/BoardController";
 import {PawnPromotionOptions} from "./gameOptions/PawnPromotionOptions";
 import {Board} from "./Board";
 import {Info} from "./info/Info";
+import {useWindowSize} from "../hooks/useWindowSize";
 
 export const GameController = () => {
+    const windowWidth = useWindowSize();
     const [newGame, setNewGame] = useState<boolean>(true)
     const [boardState, setBoardState] = useState<Array<Array<Cell>>>([])
     const [domainsInGame, setDomainsInGame] = useState<Array<DomainColor>>([])
@@ -123,6 +125,9 @@ export const GameController = () => {
                 handleCellClick={handleCellClick}
                 validMoves={validMoves}
                 playerInTurn={playerInTurn}
+                playerController={playerController}
+                suspendPlayer={suspendPlayer}
+                windowWidth={windowWidth}
             />
             <Info
                 playerController={playerController}
@@ -130,6 +135,7 @@ export const GameController = () => {
                 message={message}
                 setMessage={setMessage}
                 suspendPlayer={suspendPlayer}
+                displayTimer={windowWidth > 1112}
             />
         </div>
     )

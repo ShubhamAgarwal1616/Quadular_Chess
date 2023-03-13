@@ -8,13 +8,22 @@ import {TimerDisplay} from "./TimerDisplay";
 interface InfoProps {
     playerController: PlayerController;
     playerInTurn: Player | null;
-    message: string | null;
-    setMessage: (val: string | null) => void;
+    message?: string | null;
+    setMessage?: (val: string | null) => void;
     suspendPlayer: (player: Player) => void;
+    displayTimer: boolean;
 }
 
-export const Info: FC<InfoProps> = ({playerController, playerInTurn, setMessage, message, suspendPlayer}) => {
+export const Info: FC<InfoProps> = ({
+        playerController,
+        playerInTurn,
+        setMessage,
+        message,
+        suspendPlayer,
+        displayTimer,
+    }) => {
     const getTimerClass = (idx: number): string => {
+        if (setMessage) return '';
         switch (idx) {
             case 0: return styles.timer_1;
             case 1: return styles.timer_2;
@@ -25,19 +34,21 @@ export const Info: FC<InfoProps> = ({playerController, playerInTurn, setMessage,
 
     return (
         <div className={styles.container}>
-            <div className={styles.timers}>
-                {playerController.initialPlayers.map((player, idx) => (
-                    <TimerDisplay
-                        key={player.name}
-                        player={player}
-                        playerInTurn={playerInTurn}
-                        suspendPlayer={suspendPlayer}
-                        inactive={!playerController.activePlayers.includes(player)}
-                        className={getTimerClass(idx)}
-                    />
-                ))}
-            </div>
-            {message && <Message message={message} setMessage={setMessage} />}
+            {displayTimer && (
+                <div className={styles.timers}>
+                    {playerController.initialPlayers.map((player, idx) => (
+                        <TimerDisplay
+                            key={player.name}
+                            player={player}
+                            playerInTurn={playerInTurn}
+                            suspendPlayer={suspendPlayer}
+                            inactive={!playerController.activePlayers.includes(player)}
+                            className={getTimerClass(idx)}
+                        />
+                    ))}
+                </div>
+            )}
+            {message && setMessage && <Message message={message} setMessage={setMessage} />}
         </div>
     )
 }

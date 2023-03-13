@@ -1,21 +1,7 @@
-@mixin absolute-timer($left, $left-m, $left-s, $top) {
-  @media only screen and (max-width: 1200px) {
+@mixin absolute-timer($left, $top) {
     position: absolute;
     left: $left;
     top: $top;
-  }
-
-  @media only screen and (max-width: 1059px) {
-    position: absolute;
-    left: $left-m;
-    top: $top;
-  }
-
-  @media only screen and (max-width: 860px) {
-    position: absolute;
-    left: $left-s;
-    top: $top;
-  }
 }
 
 .container {
@@ -45,38 +31,18 @@
   }
 }
 
-//.timer_1 {
-//  @include absolute-timer(
-//                  calc((var(--boardSize) / 17) * 4),
-//                  calc((var(--boardSize) / 17) * 2),
-//                  calc(var(--boardSize) / 17),
-//                  calc((var(--boardSize) / 17) * 13)
-//  );
-//}
-//
-//.timer_2 {
-//  @include absolute-timer(
-//                  calc((var(--boardSize) / 17) * 4),
-//                  calc((var(--boardSize) / 17) * 2),
-//                  calc(var(--boardSize) / 17),
-//                  calc((var(--boardSize) / 17) * 2.5)
-//  );
-//}
-//
-//.timer_3 {
-//  @include absolute-timer(
-//                  calc((var(--boardSize) / 17) * 15),
-//                  calc((var(--boardSize) / 17) * 13.5),
-//                  calc((var(--boardSize) / 17) * 12),
-//                  calc((var(--boardSize) / 17) * 2.5)
-//  );
-//}
-//
-//.timer_4 {
-//  @include absolute-timer(
-//                  calc((var(--boardSize) / 17) * 15),
-//                  calc((var(--boardSize) / 17) * 13.5),
-//                  calc((var(--boardSize) / 17) * 12),
-//                  calc((var(--boardSize) / 17) * 13)
-//  );
-//}
+.timer_1 {
+  @include absolute-timer(calc((var(--boardSize) / 17) * 1.5), calc((var(--boardSize) / 17) * 13));
+}
+
+.timer_2 {
+  @include absolute-timer(calc((var(--boardSize) / 17) * 1.5), calc((var(--boardSize) / 17) * 2.5));
+}
+
+.timer_3 {
+  @include absolute-timer(calc((var(--boardSize) / 17) * 12.5), calc((var(--boardSize) / 17) * 2.5));
+}
+
+.timer_4 {
+  @include absolute-timer(calc((var(--boardSize) / 17) * 12.5), calc((var(--boardSize) / 17) * 13));
+}
