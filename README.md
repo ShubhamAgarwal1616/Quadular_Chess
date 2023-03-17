@@ -9,7 +9,7 @@
 
 - clone the repo in your machine
 - run `npm install` to install dependencies
-- run `npm start` to run the game on localhost:3000
+- run `npm run dev` to run the game on localhost:3000
 
 ![](./src/assets/images/quadular.gif)
 

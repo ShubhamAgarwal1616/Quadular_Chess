@@ -3,6 +3,7 @@ import {DomainColor} from "../../classes/constants";
 import {FC} from "react";
 import styles from './ColorOptions.module.scss';
 import Pawn from "../../assets/images/pawn.png";
+import Image from 'next/image'
 
 interface ColorOptionsProps {
     selectedColors: Array<DomainColor>;
@@ -11,10 +12,10 @@ interface ColorOptionsProps {
 }
 export const ColorOptions: FC<ColorOptionsProps> = ({count, selectedColors, addDomainColor}) => {
     const colorOptions = [
-        {icon: <img src={Pawn} className={styles.orange} alt='pawn'/>, val: DomainColor.ORANGE},
-        {icon: <img src={Pawn} className={styles.yellow} alt='pawn'/>, val: DomainColor.YELLOW},
-        {icon: <img src={Pawn} className={styles.white} alt='pawn'/>, val: DomainColor.WHITE},
-        {icon: <img src={Pawn} className={styles.black} alt='pawn'/>,  val: DomainColor.BLACK},
+        {icon: <Image src={Pawn} className={styles.orange} alt='pawn'/>, val: DomainColor.ORANGE},
+        {icon: <Image src={Pawn} className={styles.yellow} alt='pawn'/>, val: DomainColor.YELLOW},
+        {icon: <Image src={Pawn} className={styles.white} alt='pawn'/>, val: DomainColor.WHITE},
+        {icon: <Image src={Pawn} className={styles.black} alt='pawn'/>,  val: DomainColor.BLACK},
     ]
     return (
         <>

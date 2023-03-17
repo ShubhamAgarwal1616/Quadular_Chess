@@ -11,6 +11,7 @@ import Queen from '../assets/images/queen.png';
 import King from '../assets/images/king.png';
 import Prince from '../assets/images/prince.png';
 import YoungKing from '../assets/images/youngKing.png';
+import Image from 'next/image'
 
 interface ChessPieceProps {
     cell: Cell;
@@ -19,14 +20,14 @@ interface ChessPieceProps {
 export const ChessPiece: FC<ChessPieceProps> = ({cell}) => {
     const getPiece = (cell: Cell) => {
         switch (cell.piece?.type) {
-            case PieceType.Pawn: return <img src={Pawn}  alt='pawn'/>
-            case PieceType.Queen: return <img src={Queen}  alt='queen'/>
-            case PieceType.Rook: return <img src={Rook}  alt='rook'/>
-            case PieceType.Knight: return <img src={knight}  alt='knight'/>
-            case PieceType.King: return <img src={King}  alt='king'/>
-            case PieceType.Bishop: return <img src={Bishop}  alt='bishop'/>
-            case PieceType.Prince: return <img src={Prince}  alt='prince'/>
-            case PieceType.YoungKing: return <img src={YoungKing}  alt='youngKing'/>
+            case PieceType.Pawn: return <Image src={Pawn}  alt='pawn'/>
+            case PieceType.Queen: return <Image src={Queen}  alt='queen'/>
+            case PieceType.Rook: return <Image src={Rook}  alt='rook'/>
+            case PieceType.Knight: return <Image src={knight}  alt='knight'/>
+            case PieceType.King: return <Image src={King}  alt='king'/>
+            case PieceType.Bishop: return <Image src={Bishop}  alt='bishop'/>
+            case PieceType.Prince: return <Image src={Prince}  alt='prince'/>
+            case PieceType.YoungKing: return <Image src={YoungKing}  alt='youngKing'/>
         }
     }
 

@@ -6,6 +6,7 @@ import {FC} from "react";
 import knight from "../../assets/images/knight.png";
 import Bishop from "../../assets/images/bishop.png";
 import Queen from "../../assets/images/queen.png";
+import Image from 'next/image'
 
 interface PawnPromotionOptionsProps {
     piece?: Piece | null;
@@ -23,9 +24,9 @@ export const PawnPromotionOptions: FC<PawnPromotionOptionsProps> = ({piece, prom
     }
 
     const promotionOptions = [
-        {icon: <img src={knight} className={getColorClass()} alt='knight'/>, val: PieceType.Knight},
-        {icon: <img src={Bishop} className={getColorClass()} alt='bishop'/>, val: PieceType.Bishop},
-        {icon: <img src={Queen} className={getColorClass()} alt='queen'/>, val: PieceType.Queen},
+        {icon: <Image src={knight} className={getColorClass()} alt='knight'/>, val: PieceType.Knight},
+        {icon: <Image src={Bishop} className={getColorClass()} alt='bishop'/>, val: PieceType.Bishop},
+        {icon: <Image src={Queen} className={getColorClass()} alt='queen'/>, val: PieceType.Queen},
     ]
 
     return (
