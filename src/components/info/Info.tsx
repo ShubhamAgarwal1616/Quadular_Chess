@@ -13,6 +13,7 @@ interface InfoProps {
     suspendPlayer: (player: Player) => void;
     displayTimer: boolean;
     startGame: boolean;
+    promotionInProgress: boolean;
 }
 
 export const Info: FC<InfoProps> = ({
@@ -23,6 +24,7 @@ export const Info: FC<InfoProps> = ({
         suspendPlayer,
         displayTimer,
         startGame,
+        promotionInProgress,
     }) => {
     const getTimerClass = (idx: number): string => {
         if (setMessage) return '';
@@ -47,6 +49,7 @@ export const Info: FC<InfoProps> = ({
                             inactive={!playerController.activePlayers.includes(player)}
                             className={getTimerClass(idx)}
                             startGame={startGame}
+                            promotionInProgress={promotionInProgress}
                         />
                     ))}
                 </div>

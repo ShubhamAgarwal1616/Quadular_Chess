@@ -105,4 +105,14 @@ export class QuadularBoard {
             }
         }
     }
+
+    updateStateFromJson(json: QuadularBoard): QuadularBoard {
+        const board = new QuadularBoard();
+        board.cells = board.cells.map((row, rowIdx) => {
+            return row.map((cell, colIdx) => {
+                return cell.updateStateFromJson(json.cells[rowIdx][colIdx], this.pieceFactory);
+            })
+        })
+        return board;
+    }
 }

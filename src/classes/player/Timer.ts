@@ -8,4 +8,8 @@ export class Timer {
     decrementTime() {
         this.timerInSeconds--;
     }
+
+    setTime(timeInSeconds: number) {
+        this.timerInSeconds = timeInSeconds;
+    }
 }

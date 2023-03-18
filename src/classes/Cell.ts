@@ -1,6 +1,8 @@
 import {BOARD_SIZE, CellColor, DOMAIN_SIZE, DomainColor, DomainPlacement, ThroneSide} from "./constants";
 import {Piece} from "./pieces/Piece";
-import {dom} from "@fortawesome/fontawesome-svg-core";
+import {PieceFactory} from "./pieces/PieceFactory";
+import {Bishop} from "./pieces/Bishop";
+import {Pawn} from "./pieces/Pawn";
 
 export class Cell {
     row: number;
@@ -43,5 +45,24 @@ export class Cell {
     setAsActiveThroneCell(color: DomainColor, domainPlacement: DomainPlacement) {
         this.color = CellColor.WHITE;
         this.setAsInactiveThroneCell(color, domainPlacement);
+    }
+
+    updateStateFromJson(json: Cell, pieceFactory: PieceFactory): Cell {
+        const cell = new Cell(json.row, json.col);
+        cell.color = json.color;
+        cell.domainPlacement = json.domainPlacement;
+        cell.domainColor = json.domainColor;
+        cell.partOfThrone = json.partOfThrone;
+        cell.throneSides = json.throneSides;
+        if (json.piece) {
+            cell.piece = pieceFactory.getPieceObject(json.piece.type, json.piece.color, json.piece.domainPlacement, cell.color);
+            if (cell.piece instanceof Bishop) {
+                cell.piece.updateStateFromJson(json.piece as Bishop);
+            }
+            else if (cell.piece instanceof Pawn) {
+                cell.piece.updateStateFromJson(json.piece as Pawn);
+            }
+        }
+        return cell;
     }
 }

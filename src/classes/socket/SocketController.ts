@@ -5,9 +5,9 @@ import {
     JOIN_ROOM,
     JOIN_ROOM_ERROR, NEW_PLAYER_JOINED, OPTIONS_SELECTED,
     ROOM_CREATED,
-    ROOM_JOINED, SHARE_OPTIONS_SELECTED
+    ROOM_JOINED, SHARE_GAME_STATE, SHARE_OPTIONS_SELECTED, UPDATE_GAME_STATE
 } from "../../../pages/api/socket/constants";
-import {HostSelectedOptions, RoomData} from "../../../pages/api/socket/types";
+import {GameState, HostSelectedOptions, RoomData} from "../../../pages/api/socket/types";
 import {DomainColor} from "../constants";
 
 export class SocketController {
@@ -69,6 +69,16 @@ export class SocketController {
     optionsSelection(listener: (colors: Array<DomainColor>, timer: number) => void) {
         this.socket?.on(OPTIONS_SELECTED, ({colors, timer}) => {
             listener(colors, timer);
+        });
+    }
+
+    shareGameState(data: GameState) {
+        this.socket?.emit(SHARE_GAME_STATE, data);
+    }
+
+    updateGameState(listener: (state: GameState) => void) {
+        this.socket?.on(UPDATE_GAME_STATE, (state: GameState) => {
+            listener(state);
         });
     }
 }

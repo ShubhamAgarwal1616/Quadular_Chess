@@ -14,10 +14,12 @@ import {Info} from "./info/Info";
 import {useWindowSize} from "../hooks/useWindowSize";
 import {SoundController} from "../classes/SoundController";
 import {SocketController} from "../classes/socket/SocketController";
+import {GameState} from "../../pages/api/socket/types";
 
 export const GameController = () => {
     const windowWidth = useWindowSize();
     const [newGame, setNewGame] = useState<boolean>(true)
+    const [mode, setMode] = useState<GameMode>(GameMode.OFFLINE)
     const [boardState, setBoardState] = useState<Array<Array<Cell>>>([])
     const [domainsInGame, setDomainsInGame] = useState<Array<DomainColor>>([])
     const [selectedCell, setSelectedCell] = useState<Cell | null>(null)
@@ -27,9 +29,18 @@ export const GameController = () => {
     const [playerController, setPlayerController] = useState<PlayerController>(new PlayerController([], 0))
     const [message, setMessage] = useState<string | null>(null);
     const [startGame, setStartGame] = useState<boolean>(false);
-    const boardController = useMemo(() => new BoardController(), []);
+    const [boardController, setBoardController] = useState<BoardController>(new BoardController());
     const movesController = useMemo(() => new MovesController(), []);
     const socketController = useMemo(() => new SocketController(), []);
+    let infoMessage = '';
+
+    const getGameState = (): GameState => ({
+        boardController,
+        playerController,
+        playerInTurn,
+        roomId: socketController.roomId,
+        message: infoMessage,
+    });
 
     const clearSelection = () => {
         setValidMoves([]);
@@ -46,15 +57,21 @@ export const GameController = () => {
         if (targetCell) {
             boardController.promotePawn(targetCell, type);
             setTargetCell(null);
+            infoMessage = 'Pawn Promoted'
+            setMessage(infoMessage)
+            socketController.shareGameState(getGameState());
         }
     }
 
     const rotatePlayerTurn = (player: Player) => {
         if (playerController.getActivePlayerCount() === 1) {
-            setMessage(`${playerController.activePlayers[0].name} Wins`)
+            infoMessage = `${playerController.activePlayers[0].name} Wins`;
+            setMessage(infoMessage)
             setPlayerInTurn(null);
+            socketController.shareGameState({...getGameState(), playerInTurn: null})
             SoundController.playWinningSound();
         } else {
+            socketController.shareGameState({...getGameState(), playerInTurn: player})
             setPlayerInTurn(player);
         }
     }
@@ -68,7 +85,8 @@ export const GameController = () => {
                     const cell = movesController.getPiecePositionBeingEnPassant(piece, targetCell, boardController.board.cells);
                     if (cell) {
                         cell.setPiece(null);
-                        setMessage('En Passant');
+                        infoMessage = 'En Passant';
+                        setMessage(infoMessage);
                     }
                     SoundController.playCaptureSound();
                 }
@@ -93,7 +111,10 @@ export const GameController = () => {
             targetCell.piece ? SoundController.playCaptureSound() : SoundController.playMoveSound();
         }
         boardController.movePiece(sourceCell, targetCell);
-        boardController.checkPrincePromotion(targetCell, domainsInGame, playerInTurn) && setMessage('Prince Promoted');
+        if (boardController.checkPrincePromotion(targetCell, domainsInGame, playerInTurn)) {
+            infoMessage = 'Prince Promoted';
+            setMessage(infoMessage);
+        }
         if (boardController.canPromotePawn(targetCell, domainsInGame, playerInTurn)) {
             setTargetCell(targetCell);
         }
@@ -111,7 +132,7 @@ export const GameController = () => {
         }
     }
 
-    function setUpBoardAndPlayers(colors: Array<DomainColor>, timer: number) {
+    const setUpBoardAndPlayers = (colors: Array<DomainColor>, timer: number) => {
         setDomainsInGame(colors);
         boardController.setUpBoard(true, colors);
         setBoardState(boardController.board.cells);
@@ -122,14 +143,32 @@ export const GameController = () => {
         setNewGame(false);
     }
 
-    const setUpGame = (colors: Array<DomainColor>, timer: number, mode: GameMode, hosting: boolean) => {
-        if(mode === GameMode.OFFLINE || hosting) {
-            setUpBoardAndPlayers(colors, timer);
-            if(mode === GameMode.OFFLINE) {
-                setStartGame(true)
-            }
+    const updateGameState = (state: GameState) => {
+        const newBoardController = boardController.updateStateFromJson(state.boardController);
+        const newPlayerController = playerController.updateStateFromJson(state.playerController);
+        setPlayerController(newPlayerController);
+        if (newPlayerController.activePlayers.length === 1) {
+            setPlayerInTurn(null);
         } else {
-            socketController.optionsSelection(setUpBoardAndPlayers);
+            setPlayerInTurn(newPlayerController.activePlayers[0]);
+        }
+        setBoardController(newBoardController)
+        setBoardState(newBoardController.board.cells);
+        setMessage(state.message);
+    }
+
+    const setUpGame = (colors: Array<DomainColor>, timer: number, mode: GameMode, hosting: boolean) => {
+        setMode(mode);
+        if(mode === GameMode.OFFLINE) {
+            setUpBoardAndPlayers(colors, timer);
+            setStartGame(true)
+        } else if (mode === GameMode.ONLINE) {
+            if (hosting) {
+                setUpBoardAndPlayers(colors, timer);
+            } else {
+                socketController.optionsSelection(setUpBoardAndPlayers);
+            }
+            socketController.updateGameState(updateGameState)
         }
     }
 
@@ -178,6 +217,7 @@ export const GameController = () => {
                 suspendPlayer={suspendPlayer}
                 displayTimer={windowWidth > 1112}
                 startGame={startGame}
+                promotionInProgress={targetCell !== null}
             />
         </div>
     )

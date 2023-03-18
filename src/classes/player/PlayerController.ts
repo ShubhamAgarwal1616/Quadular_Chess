@@ -37,4 +37,14 @@ export class PlayerController {
     suspendPlayer(player: Player) {
         this.activePlayers = this.activePlayers.filter(activePlayer => player !== activePlayer);
     }
+
+    updateStateFromJson(json: PlayerController): PlayerController {
+        const controller = new PlayerController([], 0);
+        controller.activePlayers = json.activePlayers.map(playerJson => Player.updateStateFromJson(playerJson));
+        controller.initialPlayers = json.initialPlayers.map(playerJson => {
+            const activePlayer = controller.activePlayers.find(player => player.name === playerJson.name);
+            return activePlayer ? activePlayer : Player.updateStateFromJson(playerJson);
+        })
+        return controller;
+    }
 }

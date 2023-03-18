@@ -95,4 +95,10 @@ export class BoardController {
         return piece.type === PieceType.Pawn && !targetCell.piece &&
             sourceCell.row !== targetCell.row && sourceCell.col !== targetCell.col
     }
+
+    updateStateFromJson(json: BoardController): BoardController {
+        const controller = new BoardController();
+        controller.board = this.board.updateStateFromJson(json.board);
+        return controller;
+    }
 }

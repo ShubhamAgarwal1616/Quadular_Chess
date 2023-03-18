@@ -18,6 +18,10 @@ export class Bishop implements Piece {
         this.domainPlacement = domainPlacement;
     }
 
+    updateStateFromJson(piece: Bishop) {
+        this.originalCellColor = piece.originalCellColor;
+    }
+
     getAllowedMoves(): Array<CommonMoves> {
         return [
             new LeftUpwardDiagonalMove(),

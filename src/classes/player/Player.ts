@@ -24,4 +24,11 @@ export class Player {
     canControlPiece(piece?: Piece | null): Boolean {
         return !!piece && this.controlOverPieces.includes(piece.color);
     }
+
+    static updateStateFromJson(json: Player): Player {
+        const player = new Player(json.name, json.originalDomainColor, json.originalPieceColor, 0);
+        player.timer.setTime(json.timer.timerInSeconds);
+        player.controlOverPieces = json.controlOverPieces;
+        return player;
+    }
 }

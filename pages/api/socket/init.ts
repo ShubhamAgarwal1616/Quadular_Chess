@@ -1,10 +1,11 @@
 import {Server} from 'socket.io'
 import {NextApiRequest} from "next";
-import {CREATE_ROOM, JOIN_ROOM, SHARE_OPTIONS_SELECTED} from "./constants";
+import {CREATE_ROOM, JOIN_ROOM, SHARE_GAME_STATE, SHARE_OPTIONS_SELECTED} from "./constants";
 import {JoinRoom} from "./JoinRoom";
-import {RoomData, NextApiResponseWithSocket, HostSelectedOptions} from "./types";
+import {RoomData, NextApiResponseWithSocket, HostSelectedOptions, GameState} from "./types";
 import {CreateRoom} from "./CreateRoom";
 import {ShareOptionsSelected} from "./ShareOptionsSelected";
+import {ShareGameState} from "./ShareGameState";
 
 const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
     if (res.socket.server.io) {
@@ -20,6 +21,7 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
             socket.on(CREATE_ROOM, (data: RoomData) => CreateRoom(data, io, socket));
             socket.on(JOIN_ROOM, (data: RoomData) => JoinRoom(data, io, socket));
             socket.on(SHARE_OPTIONS_SELECTED, (data: HostSelectedOptions) => ShareOptionsSelected(data, socket));
+            socket.on(SHARE_GAME_STATE, (data: GameState) => ShareGameState(data, socket));
             socket.on('disconnect', () => console.log('socket disconnected', socket.id));
         })
     }

@@ -34,4 +34,8 @@ export class Pawn implements Piece {
     setMovedToTrue() {
         this.hasMovedBefore = true;
     }
+
+    updateStateFromJson(piece: Pawn) {
+        this.hasMovedBefore = piece.hasMovedBefore;
+    }
 }
