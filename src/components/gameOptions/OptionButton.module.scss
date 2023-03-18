@@ -19,3 +19,19 @@
     height: 70px;
   }
 }
+
+.optionText {
+  font-size: 50px;
+  padding: 20px;
+  font-weight: bold;
+  border: 8px solid #fff;
+  border-radius: 8px;
+  margin: 16px;
+  color: white;
+  background: rgba(0, 0, 0, 1);
+  opacity: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}

@@ -7,7 +7,6 @@ export default function App({ Component, pageProps }) {
         <Head>
             <title>Quadular</title>
             <meta name="viewport" content="width=device-width, initial-scale=1"/>
-            <meta name="theme-color" content="#000000"/>
             <meta
                 name="description"
                 content="Quadular chess game"

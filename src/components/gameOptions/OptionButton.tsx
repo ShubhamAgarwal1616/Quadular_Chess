@@ -7,10 +7,18 @@ interface OptionButtonProps {
     handleClick: () => void;
     className?: string;
     disabled?: boolean;
+    textOption?: boolean;
 }
-export const OptionButton: FC<OptionButtonProps> = ({children, handleClick, className, disabled}) => {
+export const OptionButton: FC<OptionButtonProps> = ({
+        children,
+        handleClick,
+        className,
+        disabled,
+        textOption,
+    }) => {
+    const buttonClass = textOption ? styles.optionText : styles.option;
     return (
-        <button disabled={disabled} onClick={handleClick} className={cx(styles.option, className)}>
+        <button disabled={disabled} onClick={handleClick} className={cx(buttonClass, className)}>
             {children}
         </button>
     )

@@ -1,4 +1,4 @@
-import {useMemo, useState} from "react";
+import {useEffect, useMemo, useState} from "react";
 import {Cell} from "../classes/Cell";
 import styles from "./GameController.module.scss";
 import {MovesController} from "../classes/moves/MovesController";
@@ -13,6 +13,7 @@ import {Board} from "./Board";
 import {Info} from "./info/Info";
 import {useWindowSize} from "../hooks/useWindowSize";
 import {SoundController} from "../classes/SoundController";
+import {SocketController} from "../classes/socket/SocketController";
 
 export const GameController = () => {
     const windowWidth = useWindowSize();
@@ -27,6 +28,7 @@ export const GameController = () => {
     const [message, setMessage] = useState<string | null>(null);
     const boardController = useMemo(() => new BoardController(), []);
     const movesController = useMemo(() => new MovesController(), []);
+    const socketController = useMemo(() => new SocketController(), []);
 
     const clearSelection = () => {
         setValidMoves([]);
@@ -129,7 +131,7 @@ export const GameController = () => {
 
     return (
         <div className={styles.gameContainer}>
-            {newGame && <GameOptions setUpGame={setUpGame} />}
+            {newGame && <GameOptions setUpGame={setUpGame} socketController={socketController} />}
             {targetCell && <PawnPromotionOptions piece={targetCell.piece} promotePawn={promotePawn} />}
             <Board
                 boardState={boardState}

@@ -89,4 +89,11 @@ export enum PieceColor {
     YELLOW = 'yellow',
 }
 
+export enum GameMode {
+    OFFLINE = 'offline',
+    ONLINE = 'online',
+}
+
+export const MinRoomIdLength = 6
+
 export const TimerOptionsInMinutes = [2, 5, 10, 15, 20, 30, 45, 60]

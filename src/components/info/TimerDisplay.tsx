@@ -37,9 +37,11 @@ export const TimerDisplay: FC<TimerProps> = ({player, playerInTurn, suspendPlaye
     }, [])
 
     useEffect(() => {
-        ref.current = setInterval(() => {
-            updateTime();
-        }, 1000);
+        if (playerInTurn && playerInTurn.timer.timerInSeconds > 0) {
+            ref.current = setInterval(() => {
+                updateTime();
+            }, 1000);
+        }
         if (player !== playerInTurn && ref.current) {
             clearInterval(ref.current);
         }

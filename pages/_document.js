@@ -6,9 +6,7 @@ export default class MyDocument extends Document {
         return (
             <Html lang="en">
                 <Head>
-                    <link rel="icon" href="%PUBLIC_URL%/favicon.ico"/>
-                    <link rel="apple-touch-icon" href="%PUBLIC_URL%/logo192.png"/>
-                    <link rel="manifest" href="%PUBLIC_URL%/manifest.json"/>
+                    <link rel="apple-touch-icon" href="../public/logo192.png"/>
                 </Head>
                 <body>
                 <Main />
