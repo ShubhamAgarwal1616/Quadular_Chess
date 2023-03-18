@@ -9,9 +9,17 @@ interface TimerProps {
     suspendPlayer: (player: Player) => void;
     inactive: boolean;
     className: string;
+    startGame: boolean;
 }
 
-export const TimerDisplay: FC<TimerProps> = ({player, playerInTurn, suspendPlayer, inactive, className}) => {
+export const TimerDisplay: FC<TimerProps> = ({
+        player,
+        playerInTurn,
+        suspendPlayer,
+        inactive,
+        className,
+        startGame,
+    }) => {
     const ref = useRef<NodeJS.Timer | null>(null);
     const [timer, setTimer] = useState('00:00');
 
@@ -37,7 +45,7 @@ export const TimerDisplay: FC<TimerProps> = ({player, playerInTurn, suspendPlaye
     }, [])
 
     useEffect(() => {
-        if (playerInTurn && playerInTurn.timer.timerInSeconds > 0) {
+        if (playerInTurn && playerInTurn.timer.timerInSeconds > 0 && startGame) {
             ref.current = setInterval(() => {
                 updateTime();
             }, 1000);
@@ -48,7 +56,7 @@ export const TimerDisplay: FC<TimerProps> = ({player, playerInTurn, suspendPlaye
         return () => {
             ref.current && clearInterval(ref.current)
         };
-    }, [player, playerInTurn]);
+    }, [player, playerInTurn, startGame]);
 
     return (
         <div className={cx(styles.timerInfo, className, {

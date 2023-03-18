@@ -14,8 +14,16 @@ interface CellProps {
     handleCellClick: (cell: Cell) => void;
     validMoves: Array<Cell>;
     playerInTurn: Player | null;
+    startGame: boolean;
 }
-export const BoardCell: FC<CellProps> = ({cell, selectedCell, handleCellClick, validMoves, playerInTurn}) => {
+export const BoardCell: FC<CellProps> = ({
+        cell,
+        selectedCell,
+        handleCellClick,
+        validMoves,
+        playerInTurn,
+        startGame,
+    }) => {
     const getThroneSidesClass = (cell: Cell): string => {
         if(cell.domainPlacement === DomainPlacement.Top) {
             return cell.throneSides === ThroneSide.Left ? styles.leftBottomThrone : styles.rightBottomThrone;
@@ -41,14 +49,14 @@ export const BoardCell: FC<CellProps> = ({cell, selectedCell, handleCellClick, v
 
     return (
         <button
-            disabled={cell.color === CellColor.INACTIVE}
+            disabled={cell.color === CellColor.INACTIVE || !startGame}
             onClick={() => handleCellClick(cell)}
             className={cx(styles.boardCell, {
                 [styles.black]: cell.color === CellColor.BLACK,
                 [styles.white]: cell.color === CellColor.WHITE || (cell.partOfThrone && !cell.throneSides),
                 [getThroneSidesClass(cell)]: cell.throneSides,
                 [getActivatedClass(selectedCell?.piece)]: cell === selectedCell || validMoves.includes(cell),
-                [styles.activePieces]: !selectedCell && playerInTurn?.canControlPiece(cell.piece)
+                [styles.activePieces]: startGame && !selectedCell && playerInTurn?.canControlPiece(cell.piece)
         })}>
             {cell.domainColor && (
                 <GradientBackground cell={cell} />

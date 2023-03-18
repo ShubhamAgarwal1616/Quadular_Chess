@@ -1,6 +1,6 @@
 import {Server, Socket} from 'socket.io';
 import {RoomData} from "./types";
-import {JOIN_ROOM_ERROR, ROOM_JOINED} from "./constants";
+import {JOIN_ROOM_ERROR, NEW_PLAYER_JOINED, ROOM_JOINED} from "./constants";
 
 export const JoinRoom = async (data: RoomData, io: Server, socket: Socket) => {
     if (!io.sockets.adapter.rooms.has(data.roomId)) {
@@ -18,6 +18,7 @@ export const JoinRoom = async (data: RoomData, io: Server, socket: Socket) => {
         } else {
             await socket.join(data.roomId)
             socket.emit(ROOM_JOINED);
+            io.to(data.roomId).emit(NEW_PLAYER_JOINED, {playersInGame: playersConnected?.size});
         }
     }
 }

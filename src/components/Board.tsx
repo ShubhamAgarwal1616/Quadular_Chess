@@ -15,6 +15,7 @@ interface BoardProps {
     playerController: PlayerController;
     suspendPlayer: (player: Player) => void;
     windowWidth: number;
+    startGame: boolean;
 }
 
 export const Board: FC<BoardProps> = ({
@@ -26,6 +27,7 @@ export const Board: FC<BoardProps> = ({
         playerController,
         suspendPlayer,
         windowWidth,
+        startGame,
     }) => {
     return (
         <div className={styles.boardContainer}>
@@ -35,6 +37,7 @@ export const Board: FC<BoardProps> = ({
                     playerInTurn={playerInTurn}
                     suspendPlayer={suspendPlayer}
                     displayTimer={windowWidth <= 1112}
+                    startGame={startGame}
                 />
             )}
             <div className={styles.board}>
@@ -47,6 +50,7 @@ export const Board: FC<BoardProps> = ({
                             handleCellClick={handleCellClick}
                             validMoves={validMoves}
                             playerInTurn={playerInTurn}
+                            startGame={startGame}
                         />
                     ))
                 })}

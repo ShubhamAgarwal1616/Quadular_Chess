@@ -12,6 +12,7 @@ interface InfoProps {
     setMessage?: (val: string | null) => void;
     suspendPlayer: (player: Player) => void;
     displayTimer: boolean;
+    startGame: boolean;
 }
 
 export const Info: FC<InfoProps> = ({
@@ -21,6 +22,7 @@ export const Info: FC<InfoProps> = ({
         message,
         suspendPlayer,
         displayTimer,
+        startGame,
     }) => {
     const getTimerClass = (idx: number): string => {
         if (setMessage) return '';
@@ -44,11 +46,12 @@ export const Info: FC<InfoProps> = ({
                             suspendPlayer={suspendPlayer}
                             inactive={!playerController.activePlayers.includes(player)}
                             className={getTimerClass(idx)}
+                            startGame={startGame}
                         />
                     ))}
                 </div>
             )}
-            {message && setMessage && <Message message={message} setMessage={setMessage} />}
+            {message && setMessage && <Message startGame={startGame} message={message} setMessage={setMessage} />}
         </div>
     )
 }

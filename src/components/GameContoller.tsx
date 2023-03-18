@@ -1,11 +1,11 @@
-import {useEffect, useMemo, useState} from "react";
+import {useMemo, useState} from "react";
 import {Cell} from "../classes/Cell";
 import styles from "./GameController.module.scss";
 import {MovesController} from "../classes/moves/MovesController";
 import {Piece} from "../classes/pieces/Piece";
 import {Player} from "../classes/player/Player";
 import {PlayerController} from "../classes/player/PlayerController";
-import {DomainColor, PieceType} from "../classes/constants";
+import {DomainColor, GameMode, PieceType} from "../classes/constants";
 import {GameOptions} from "./gameOptions/GameOptions";
 import {BoardController} from "../classes/BoardController";
 import {PawnPromotionOptions} from "./gameOptions/PawnPromotionOptions";
@@ -26,6 +26,7 @@ export const GameController = () => {
     const [playerInTurn, setPlayerInTurn] = useState<Player | null>(null)
     const [playerController, setPlayerController] = useState<PlayerController>(new PlayerController([], 0))
     const [message, setMessage] = useState<string | null>(null);
+    const [startGame, setStartGame] = useState<boolean>(false);
     const boardController = useMemo(() => new BoardController(), []);
     const movesController = useMemo(() => new MovesController(), []);
     const socketController = useMemo(() => new SocketController(), []);
@@ -110,7 +111,7 @@ export const GameController = () => {
         }
     }
 
-    const setUpGame = (colors: Array<DomainColor>, timer: number) => {
+    function setUpBoardAndPlayers(colors: Array<DomainColor>, timer: number) {
         setDomainsInGame(colors);
         boardController.setUpBoard(true, colors);
         setBoardState(boardController.board.cells);
@@ -121,6 +122,17 @@ export const GameController = () => {
         setNewGame(false);
     }
 
+    const setUpGame = (colors: Array<DomainColor>, timer: number, mode: GameMode, hosting: boolean) => {
+        if(mode === GameMode.OFFLINE || hosting) {
+            setUpBoardAndPlayers(colors, timer);
+            if(mode === GameMode.OFFLINE) {
+                setStartGame(true)
+            }
+        } else {
+            socketController.optionsSelection(setUpBoardAndPlayers);
+        }
+    }
+
     const suspendPlayer = (player: Player) => {
         const nextPlayer = playerController.getNextPlayerInTurn();
         playerController.suspendPlayer(player);
@@ -129,9 +141,23 @@ export const GameController = () => {
         if (playerController.activePlayers.length > 1) SoundController.playTimerExpireSound();
     }
 
+    const playerJoinedListener = (playersInGame: number) => {
+        setMessage(`Players joined: ${playersInGame} \n\n waiting for other players...`);
+        if (playersInGame === socketController.maxPlayerCount) {
+            setMessage(null);
+            setStartGame(true);
+        }
+    }
+
     return (
         <div className={styles.gameContainer}>
-            {newGame && <GameOptions setUpGame={setUpGame} socketController={socketController} />}
+            {newGame && (
+                <GameOptions
+                    setUpGame={setUpGame}
+                    socketController={socketController}
+                    playerJoinedListener={playerJoinedListener}
+                />
+            )}
             {targetCell && <PawnPromotionOptions piece={targetCell.piece} promotePawn={promotePawn} />}
             <Board
                 boardState={boardState}
@@ -142,6 +168,7 @@ export const GameController = () => {
                 playerController={playerController}
                 suspendPlayer={suspendPlayer}
                 windowWidth={windowWidth}
+                startGame={startGame}
             />
             <Info
                 playerController={playerController}
@@ -150,6 +177,7 @@ export const GameController = () => {
                 setMessage={setMessage}
                 suspendPlayer={suspendPlayer}
                 displayTimer={windowWidth > 1112}
+                startGame={startGame}
             />
         </div>
     )

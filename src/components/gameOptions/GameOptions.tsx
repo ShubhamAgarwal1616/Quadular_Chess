@@ -10,11 +10,16 @@ import {ModeOptions} from "./ModeOptions";
 import {JoinRoomScreen} from "./JoinRoomScreen";
 
 interface GameOptionsProps {
-    setUpGame: (colors: Array<DomainColor>, timer: number) => void;
+    setUpGame: (colors: Array<DomainColor>, timer: number, mode: GameMode, hosting: boolean) => void;
     socketController: SocketController;
+    playerJoinedListener: (playersInGame: number) => void;
 }
 
-export const GameOptions: FC<GameOptionsProps> = ({setUpGame, socketController}) => {
+export const GameOptions: FC<GameOptionsProps> = ({
+        setUpGame,
+        socketController,
+        playerJoinedListener,
+    }) => {
     const [playerCount, setPlayerCount] = useState<number>(0)
     const [colors, setColors] = useState<Array<DomainColor>>([])
     const [timer, setTimer] = useState<number>(0);
@@ -39,6 +44,7 @@ export const GameOptions: FC<GameOptionsProps> = ({setUpGame, socketController})
             socketController.connect().then(() => {
                 setMode(val);
                 setErrorMessage(null);
+                socketController.playerJoined(playerJoinedListener)
             }).catch(() => {
                 setErrorMessage('Error occurred while connecting to server');
             })
@@ -49,23 +55,30 @@ export const GameOptions: FC<GameOptionsProps> = ({setUpGame, socketController})
 
     const setTimerOption = (val: number) => {
         if (mode === GameMode.OFFLINE) {
-            setUpGame(colors, val);
+            setUpGame(colors, val, mode, false);
         } else {
             setTimer(val);
         }
+    }
+
+    function triggerJoinRoomEvent(roomId: string) {
+        setErrorMessage(null);
+        if (hosting) {
+            socketController.setOptionsSelectedByHost({colors, timer, roomId: roomId})
+        }
+        socketController.joinRoom({roomId, maxPlayerCount: playerCount}, hosting).then(() => {
+            hosting ? setUpGame(colors, timer, GameMode.ONLINE, true) : setUpGame(colors, timer, GameMode.ONLINE, false);
+        }).catch((message) => {
+            setErrorMessage(message)
+            socketController.setOptionsSelectedByHost(null)
+        })
     }
 
     const joinRoom = (roomId: string) => {
         if (roomId.trim().length < MinRoomIdLength) {
             setErrorMessage('Room Id should have minimum six characters');
         } else {
-            setErrorMessage(null);
-            socketController.joinRoom({roomId, maxPlayerCount: playerCount}, hosting).then(() => {
-                //TODO: verify this
-                hosting ? setUpGame(colors, timer) : setUpGame(allDomainColors, 0);
-            }).catch((message) => {
-                setErrorMessage(message)
-            })
+            triggerJoinRoomEvent(roomId);
         }
     }
 
