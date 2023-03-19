@@ -47,7 +47,7 @@ export class Cell {
         this.setAsInactiveThroneCell(color, domainPlacement);
     }
 
-    updateStateFromJson(json: Cell, pieceFactory: PieceFactory): Cell {
+    static updateStateFromJson(json: Cell, pieceFactory: PieceFactory): Cell {
         const cell = new Cell(json.row, json.col);
         cell.color = json.color;
         cell.domainPlacement = json.domainPlacement;

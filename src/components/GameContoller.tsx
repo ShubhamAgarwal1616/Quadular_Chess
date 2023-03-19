@@ -5,7 +5,7 @@ import {MovesController} from "../classes/moves/MovesController";
 import {Piece} from "../classes/pieces/Piece";
 import {Player} from "../classes/player/Player";
 import {PlayerController} from "../classes/player/PlayerController";
-import {DomainColor, GameMode, PieceType} from "../classes/constants";
+import {DomainColor, GameMode, PieceType, SoundType} from "../classes/constants";
 import {GameOptions} from "./gameOptions/GameOptions";
 import {BoardController} from "../classes/BoardController";
 import {PawnPromotionOptions} from "./gameOptions/PawnPromotionOptions";
@@ -34,6 +34,7 @@ export const GameController = () => {
     const movesController = useMemo(() => new MovesController(), []);
     const socketController = useMemo(() => new SocketController(), []);
     let infoMessage = '';
+    let soundType: SoundType = SoundType.MOVE;
 
     const getGameState = (lastMovePos: number[][]): GameState => ({
         boardController,
@@ -41,6 +42,7 @@ export const GameController = () => {
         roomId: socketController.roomId,
         message: infoMessage,
         lastMovePos: lastMovePos,
+        soundType,
     });
 
     const clearSelection = () => {
@@ -67,6 +69,7 @@ export const GameController = () => {
     const rotatePlayerTurn = (player: Player, lastMovePos: number[][]) => {
         if (playerController.getActivePlayerCount() === 1) {
             infoMessage = `${playerController.activePlayers[0].name} Wins`;
+            soundType = SoundType.WINNING;
             setMessage(infoMessage)
             setPlayerInTurn(null);
             socketController.shareGameState(getGameState(lastMovePos))
@@ -89,6 +92,7 @@ export const GameController = () => {
                         infoMessage = 'En Passant';
                         setMessage(infoMessage);
                     }
+                    soundType = SoundType.CAPTURE;
                     SoundController.playCaptureSound();
                 }
             }
@@ -109,6 +113,7 @@ export const GameController = () => {
         checkForEnPassant(sourceCell, targetCell, sourceCell.piece);
         checkKingKill(targetCell);
         if (playerController.activePlayers.length > 1) {
+            soundType = targetCell.piece ? SoundType.CAPTURE : SoundType.MOVE;
             targetCell.piece ? SoundController.playCaptureSound() : SoundController.playMoveSound();
         }
         boardController.movePiece(sourceCell, targetCell);
@@ -152,6 +157,7 @@ export const GameController = () => {
     }
 
     const updateGameState = (state: GameState) => {
+        SoundController.playSound(state.soundType);
         const newBoardController = boardController.updateStateFromJson(state.boardController);
         const newPlayerController = playerController.updateStateFromJson(state.playerController);
         setPlayerController(newPlayerController);
@@ -184,6 +190,7 @@ export const GameController = () => {
     const suspendPlayer = (player: Player) => {
         const nextPlayer = playerController.getNextPlayerInTurn();
         playerController.suspendPlayer(player);
+        soundType = SoundType.TIMER_EXPIRED;
         SoundController.playTimerExpireSound();
         rotatePlayerTurn(nextPlayer, lastMovePos);
         if (playerController.activePlayers.length > 1) SoundController.playTimerExpireSound();

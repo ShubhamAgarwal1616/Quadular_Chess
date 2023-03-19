@@ -1,3 +1,5 @@
+import {SoundType} from "./constants";
+
 export class SoundController {
     static playMoveSound() {
         const audio = new Audio('/audio/move.wav');
@@ -37,5 +39,14 @@ export class SoundController {
         const source = context.createMediaElementSource(audio);
         source.connect(context.destination);
         audio.play()
+    }
+
+    static playSound(type: SoundType) {
+        switch (type) {
+            case SoundType.CAPTURE: return this.playCaptureSound();
+            case SoundType.MOVE: return this.playMoveSound();
+            case SoundType.TIMER_EXPIRED: return this.playTimerExpireSound();
+            case SoundType.WINNING: return this.playWinningSound();
+        }
     }
 }

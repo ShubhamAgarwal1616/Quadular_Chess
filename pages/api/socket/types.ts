@@ -2,7 +2,7 @@ import {Server as HTTPServer} from "http";
 import {Server} from "socket.io";
 import {Socket as NetSocket} from "net";
 import {NextApiResponse} from "next";
-import {DomainColor} from "../../../src/classes/constants";
+import {DomainColor, SoundType} from "../../../src/classes/constants";
 import {BoardController} from "../../../src/classes/BoardController";
 import {PlayerController} from "../../../src/classes/player/PlayerController";
 import {Player} from "../../../src/classes/player/Player";
@@ -36,4 +36,5 @@ export interface GameState {
     roomId: string;
     message: string | null,
     lastMovePos: number[][],
+    soundType: SoundType,
 }

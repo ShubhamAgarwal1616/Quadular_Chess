@@ -97,3 +97,11 @@ export enum GameMode {
 export const MinRoomIdLength = 6
 
 export const TimerOptionsInMinutes = [2, 5, 10, 15, 20, 30, 45, 60]
+
+export enum SoundType {
+    MOVE = 'move',
+    CAPTURE = 'capture',
+    TIMER_EXPIRED = 'timer_expired',
+    WINNING = 'winning',
+    SET_UP = 'set_up',
+}
