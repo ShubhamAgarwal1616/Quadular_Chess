@@ -33,7 +33,7 @@ export interface HostSelectedOptions {
 export interface GameState {
     boardController: BoardController;
     playerController: PlayerController;
-    playerInTurn: Player | null,
     roomId: string;
     message: string | null,
+    lastMovePos: number[][],
 }

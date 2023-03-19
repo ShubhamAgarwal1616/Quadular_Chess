@@ -20,6 +20,7 @@ export const GameController = () => {
     const windowWidth = useWindowSize();
     const [newGame, setNewGame] = useState<boolean>(true)
     const [mode, setMode] = useState<GameMode>(GameMode.OFFLINE)
+    const [lastMovePos, setLastMovePos] = useState<number[][]>([])
     const [boardState, setBoardState] = useState<Array<Array<Cell>>>([])
     const [domainsInGame, setDomainsInGame] = useState<Array<DomainColor>>([])
     const [selectedCell, setSelectedCell] = useState<Cell | null>(null)
@@ -34,12 +35,12 @@ export const GameController = () => {
     const socketController = useMemo(() => new SocketController(), []);
     let infoMessage = '';
 
-    const getGameState = (): GameState => ({
+    const getGameState = (lastMovePos: number[][]): GameState => ({
         boardController,
         playerController,
-        playerInTurn,
         roomId: socketController.roomId,
         message: infoMessage,
+        lastMovePos: lastMovePos,
     });
 
     const clearSelection = () => {
@@ -59,19 +60,19 @@ export const GameController = () => {
             setTargetCell(null);
             infoMessage = 'Pawn Promoted'
             setMessage(infoMessage)
-            socketController.shareGameState(getGameState());
+            socketController.shareGameState(getGameState(lastMovePos));
         }
     }
 
-    const rotatePlayerTurn = (player: Player) => {
+    const rotatePlayerTurn = (player: Player, lastMovePos: number[][]) => {
         if (playerController.getActivePlayerCount() === 1) {
             infoMessage = `${playerController.activePlayers[0].name} Wins`;
             setMessage(infoMessage)
             setPlayerInTurn(null);
-            socketController.shareGameState({...getGameState(), playerInTurn: null})
+            socketController.shareGameState(getGameState(lastMovePos))
             SoundController.playWinningSound();
         } else {
-            socketController.shareGameState({...getGameState(), playerInTurn: player})
+            socketController.shareGameState(getGameState(lastMovePos))
             setPlayerInTurn(player);
         }
     }
@@ -120,14 +121,21 @@ export const GameController = () => {
         }
     }
 
+    const activeSocket = (): boolean => {
+        if (mode === GameMode.ONLINE) return playerInTurn?.name === socketController.forPlayerWithName;
+        return true;
+    }
+
     const handleCellClick = (cell: Cell) => {
-        if (cell.piece && playerInTurn?.canControlPiece(cell.piece)  && !selectedCell) {
+        if (cell.piece && playerInTurn?.canControlPiece(cell.piece) && activeSocket() && !selectedCell) {
             predictMoves(cell, cell.piece, playerInTurn);
         } else if (selectedCell && !validMoves.includes(cell)) {
            clearSelection()
         } else if (selectedCell && validMoves.includes(cell)) {
             movePiece(selectedCell, cell);
-            rotatePlayerTurn(playerController.getNextPlayerInTurn());
+            const lastMovePos = [[selectedCell.row, selectedCell.col], [cell.row, cell.col]];
+            setLastMovePos(lastMovePos);
+            rotatePlayerTurn(playerController.getNextPlayerInTurn(), lastMovePos);
             clearSelection();
         }
     }
@@ -154,6 +162,7 @@ export const GameController = () => {
         }
         setBoardController(newBoardController)
         setBoardState(newBoardController.board.cells);
+        setLastMovePos(state.lastMovePos);
         setMessage(state.message);
     }
 
@@ -176,7 +185,7 @@ export const GameController = () => {
         const nextPlayer = playerController.getNextPlayerInTurn();
         playerController.suspendPlayer(player);
         SoundController.playTimerExpireSound();
-        rotatePlayerTurn(nextPlayer);
+        rotatePlayerTurn(nextPlayer, lastMovePos);
         if (playerController.activePlayers.length > 1) SoundController.playTimerExpireSound();
     }
 
@@ -208,6 +217,9 @@ export const GameController = () => {
                 suspendPlayer={suspendPlayer}
                 windowWidth={windowWidth}
                 startGame={startGame}
+                lastMovePos={lastMovePos}
+                promotionInProgress={targetCell !== null}
+                activeSocket={activeSocket}
             />
             <Info
                 playerController={playerController}

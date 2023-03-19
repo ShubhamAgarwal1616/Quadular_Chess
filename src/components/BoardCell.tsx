@@ -15,6 +15,8 @@ interface CellProps {
     validMoves: Array<Cell>;
     playerInTurn: Player | null;
     startGame: boolean;
+    lastMovePos: number[][];
+    activeSocket: () => boolean;
 }
 export const BoardCell: FC<CellProps> = ({
         cell,
@@ -23,6 +25,8 @@ export const BoardCell: FC<CellProps> = ({
         validMoves,
         playerInTurn,
         startGame,
+        lastMovePos,
+        activeSocket,
     }) => {
     const getThroneSidesClass = (cell: Cell): string => {
         if(cell.domainPlacement === DomainPlacement.Top) {
@@ -47,19 +51,21 @@ export const BoardCell: FC<CellProps> = ({
         }
     }
 
+    const belongsToLastMove = (): boolean => lastMovePos.some(pos => pos[0] === cell.row && pos[1] === cell.col);
+
     return (
         <button
-            disabled={cell.color === CellColor.INACTIVE || !startGame}
+            disabled={cell.color === CellColor.INACTIVE || !startGame && !activeSocket()}
             onClick={() => handleCellClick(cell)}
             className={cx(styles.boardCell, {
                 [styles.black]: cell.color === CellColor.BLACK,
                 [styles.white]: cell.color === CellColor.WHITE || (cell.partOfThrone && !cell.throneSides),
                 [getThroneSidesClass(cell)]: cell.throneSides,
                 [getActivatedClass(selectedCell?.piece)]: cell === selectedCell || validMoves.includes(cell),
-                [styles.activePieces]: startGame && !selectedCell && playerInTurn?.canControlPiece(cell.piece)
+                [styles.activePieces]: startGame && !selectedCell && playerInTurn?.canControlPiece(cell.piece) && activeSocket(),
         })}>
-            {cell.domainColor && (
-                <GradientBackground cell={cell} />
+            {(cell.domainColor || belongsToLastMove()) && (
+                <GradientBackground cell={cell} lastMovePos={belongsToLastMove()} />
             )}
             {cell.piece && (
                 <ChessPiece cell={cell} />

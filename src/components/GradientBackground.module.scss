@@ -24,3 +24,7 @@
 .whiteGradient {
   @include cell_gradient(var(--whiteGradient));
 }
+
+.lastMoveGradient {
+  @include cell_gradient(var(--lastMoveGradient));
+}

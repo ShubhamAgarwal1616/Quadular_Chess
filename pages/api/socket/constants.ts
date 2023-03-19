@@ -13,3 +13,5 @@ export const OPTIONS_SELECTED = 'options_selected';
 
 export const SHARE_GAME_STATE = 'share_game_state';
 export const UPDATE_GAME_STATE = 'update_game_state';
+
+export const MAP_PLAYER_TO_SOCKET = 'map_player_to_socket';

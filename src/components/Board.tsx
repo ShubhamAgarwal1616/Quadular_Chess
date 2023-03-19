@@ -16,6 +16,9 @@ interface BoardProps {
     suspendPlayer: (player: Player) => void;
     windowWidth: number;
     startGame: boolean;
+    lastMovePos: number[][];
+    promotionInProgress: boolean;
+    activeSocket: () => boolean;
 }
 
 export const Board: FC<BoardProps> = ({
@@ -28,6 +31,9 @@ export const Board: FC<BoardProps> = ({
         suspendPlayer,
         windowWidth,
         startGame,
+        lastMovePos,
+        promotionInProgress,
+        activeSocket,
     }) => {
     return (
         <div className={styles.boardContainer}>
@@ -38,6 +44,7 @@ export const Board: FC<BoardProps> = ({
                     suspendPlayer={suspendPlayer}
                     displayTimer={windowWidth <= 1112}
                     startGame={startGame}
+                    promotionInProgress={promotionInProgress}
                 />
             )}
             <div className={styles.board}>
@@ -51,6 +58,8 @@ export const Board: FC<BoardProps> = ({
                             validMoves={validMoves}
                             playerInTurn={playerInTurn}
                             startGame={startGame}
+                            lastMovePos={lastMovePos}
+                            activeSocket={activeSocket}
                         />
                     ))
                 })}

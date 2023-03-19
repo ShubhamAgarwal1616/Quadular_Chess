@@ -6,9 +6,10 @@ import styles from "./GradientBackground.module.scss";
 
 interface GradientBackgroundProps {
     cell: Cell;
+    lastMovePos: boolean;
 }
 
-export const GradientBackground: FC<GradientBackgroundProps> = ({cell}) => {
+export const GradientBackground: FC<GradientBackgroundProps> = ({cell, lastMovePos}) => {
     const getCssColor = (): string => {
         switch (cell.domainColor) {
             case DomainColor.YELLOW: return '--yellowGradient';
@@ -44,6 +45,8 @@ export const GradientBackground: FC<GradientBackgroundProps> = ({cell}) => {
     }
 
     return (
-        <div className={cx(getGradientClass())} style={getStyles()}/>
+        <div className={cx(getGradientClass(), {
+            [styles.lastMoveGradient]: lastMovePos,
+        })} style={getStyles()}/>
     )
 }

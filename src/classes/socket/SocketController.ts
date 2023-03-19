@@ -3,7 +3,7 @@ import {
     CREATE_ROOM,
     CREATE_ROOM_ERROR,
     JOIN_ROOM,
-    JOIN_ROOM_ERROR, NEW_PLAYER_JOINED, OPTIONS_SELECTED,
+    JOIN_ROOM_ERROR, MAP_PLAYER_TO_SOCKET, NEW_PLAYER_JOINED, OPTIONS_SELECTED,
     ROOM_CREATED,
     ROOM_JOINED, SHARE_GAME_STATE, SHARE_OPTIONS_SELECTED, UPDATE_GAME_STATE
 } from "../../../pages/api/socket/constants";
@@ -16,6 +16,7 @@ export class SocketController {
     isHost: boolean | null = false
     maxPlayerCount: number = 0
     optionsSelectedByHost: HostSelectedOptions | null = null
+    forPlayerWithName: string | null = null;
 
     setOptionsSelectedByHost(val: HostSelectedOptions | null) {
         this.optionsSelectedByHost = val;
@@ -34,6 +35,7 @@ export class SocketController {
                 this.socket.on('connect_error', () => {
                     return reject('Connection failed')
                 })
+                this.socket.on(MAP_PLAYER_TO_SOCKET, (name) => this.forPlayerWithName = name)
             }).catch(() => {
                 reject('Connection failed')
             })
