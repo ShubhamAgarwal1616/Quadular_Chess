@@ -24,7 +24,7 @@ export const GameController = () => {
     const [boardState, setBoardState] = useState<Array<Array<Cell>>>([])
     const [domainsInGame, setDomainsInGame] = useState<Array<DomainColor>>([])
     const [selectedCell, setSelectedCell] = useState<Cell | null>(null)
-    const [targetCell, setTargetCell] = useState<Cell | null>(null)
+    const [pawnPromotionCell, setPawnPromotionCell] = useState<Cell | null>(null)
     const [validMoves, setValidMoves] = useState<Array<Cell>>([])
     const [playerInTurn, setPlayerInTurn] = useState<Player | null>(null)
     const [playerController, setPlayerController] = useState<PlayerController>(new PlayerController([], 0))
@@ -33,16 +33,19 @@ export const GameController = () => {
     const [boardController, setBoardController] = useState<BoardController>(new BoardController());
     const movesController = useMemo(() => new MovesController(), []);
     const socketController = useMemo(() => new SocketController(), []);
+
+    // for sharing state in online mode
     let infoMessage = '';
     let soundType: SoundType = SoundType.MOVE;
 
-    const getGameState = (lastMovePos: number[][]): GameState => ({
+    const getGameState = (lastMovePos: number[][], promotionCell: Cell | null): GameState => ({
         boardController,
         playerController,
         roomId: socketController.roomId,
         message: infoMessage,
         lastMovePos: lastMovePos,
         soundType,
+        pawnPromotionCell: promotionCell,
     });
 
     const clearSelection = () => {
@@ -57,25 +60,25 @@ export const GameController = () => {
     }
 
     const promotePawn = (type: PieceType) => {
-        if (targetCell) {
-            boardController.promotePawn(targetCell, type);
-            setTargetCell(null);
+        if (pawnPromotionCell) {
+            boardController.promotePawn(pawnPromotionCell, type);
+            setPawnPromotionCell(null);
             infoMessage = 'Pawn Promoted'
             setMessage(infoMessage)
-            socketController.shareGameState(getGameState(lastMovePos));
+            socketController.shareGameState(getGameState(lastMovePos, null));
         }
     }
 
-    const rotatePlayerTurn = (player: Player, lastMovePos: number[][]) => {
+    const rotatePlayerTurn = (player: Player, lastMovePos: number[][], promotionCell: Cell | null) => {
         if (playerController.getActivePlayerCount() === 1) {
             infoMessage = `${playerController.activePlayers[0].name} Wins`;
             soundType = SoundType.WINNING;
             setMessage(infoMessage)
             setPlayerInTurn(null);
-            socketController.shareGameState(getGameState(lastMovePos))
+            socketController.shareGameState(getGameState(lastMovePos, promotionCell))
             SoundController.playWinningSound();
         } else {
-            socketController.shareGameState(getGameState(lastMovePos))
+            socketController.shareGameState(getGameState(lastMovePos, promotionCell))
             setPlayerInTurn(player);
         }
     }
@@ -121,14 +124,19 @@ export const GameController = () => {
             infoMessage = 'Prince Promoted';
             setMessage(infoMessage);
         }
-        if (boardController.canPromotePawn(targetCell, domainsInGame, playerInTurn)) {
-            setTargetCell(targetCell);
-        }
     }
 
     const activeSocket = (): boolean => {
         if (mode === GameMode.ONLINE) return playerInTurn?.name === socketController.forPlayerWithName;
         return true;
+    }
+
+    function checkPawnPromotion(cell: Cell): Cell | null {
+        if (boardController.canPromotePawn(cell, domainsInGame, playerInTurn)) {
+            setPawnPromotionCell(cell);
+            return cell;
+        }
+        return null;
     }
 
     const handleCellClick = (cell: Cell) => {
@@ -138,9 +146,10 @@ export const GameController = () => {
            clearSelection()
         } else if (selectedCell && validMoves.includes(cell)) {
             movePiece(selectedCell, cell);
+            const promotionCell = checkPawnPromotion(cell);
             const lastMovePos = [[selectedCell.row, selectedCell.col], [cell.row, cell.col]];
             setLastMovePos(lastMovePos);
-            rotatePlayerTurn(playerController.getNextPlayerInTurn(), lastMovePos);
+            rotatePlayerTurn(playerController.getNextPlayerInTurn(), lastMovePos, promotionCell);
             clearSelection();
         }
     }
@@ -160,6 +169,7 @@ export const GameController = () => {
         SoundController.playSound(state.soundType);
         const newBoardController = boardController.updateStateFromJson(state.boardController);
         const newPlayerController = playerController.updateStateFromJson(state.playerController);
+        setPawnPromotionCell(state.pawnPromotionCell ? Cell.updateStateFromJson(state.pawnPromotionCell) : null);
         setPlayerController(newPlayerController);
         if (newPlayerController.activePlayers.length === 1) {
             setPlayerInTurn(null);
@@ -192,7 +202,7 @@ export const GameController = () => {
         playerController.suspendPlayer(player);
         soundType = SoundType.TIMER_EXPIRED;
         SoundController.playTimerExpireSound();
-        rotatePlayerTurn(nextPlayer, lastMovePos);
+        rotatePlayerTurn(nextPlayer, lastMovePos, pawnPromotionCell);
         if (playerController.activePlayers.length > 1) SoundController.playTimerExpireSound();
     }
 
@@ -213,7 +223,15 @@ export const GameController = () => {
                     playerJoinedListener={playerJoinedListener}
                 />
             )}
-            {targetCell && <PawnPromotionOptions piece={targetCell.piece} promotePawn={promotePawn} />}
+            {pawnPromotionCell?.piece && (
+                <PawnPromotionOptions
+                    piece={pawnPromotionCell.piece}
+                    promotePawn={promotePawn}
+                    socketController={socketController}
+                    mode={mode}
+                    playerController={playerController}
+                />
+            )}
             <Board
                 boardState={boardState}
                 selectedCell={selectedCell}
@@ -225,7 +243,7 @@ export const GameController = () => {
                 windowWidth={windowWidth}
                 startGame={startGame}
                 lastMovePos={lastMovePos}
-                promotionInProgress={targetCell !== null}
+                promotionInProgress={pawnPromotionCell !== null}
                 activeSocket={activeSocket}
             />
             <Info
@@ -236,7 +254,7 @@ export const GameController = () => {
                 suspendPlayer={suspendPlayer}
                 displayTimer={windowWidth > 1112}
                 startGame={startGame}
-                promotionInProgress={targetCell !== null}
+                promotionInProgress={pawnPromotionCell !== null}
             />
         </div>
     )

@@ -47,7 +47,7 @@ export class Cell {
         this.setAsInactiveThroneCell(color, domainPlacement);
     }
 
-    static updateStateFromJson(json: Cell, pieceFactory: PieceFactory): Cell {
+    static updateStateFromJson(json: Cell): Cell {
         const cell = new Cell(json.row, json.col);
         cell.color = json.color;
         cell.domainPlacement = json.domainPlacement;
@@ -55,7 +55,7 @@ export class Cell {
         cell.partOfThrone = json.partOfThrone;
         cell.throneSides = json.throneSides;
         if (json.piece) {
-            cell.piece = pieceFactory.getPieceObject(json.piece.type, json.piece.color, json.piece.domainPlacement, cell.color);
+            cell.piece = new PieceFactory().getPieceObject(json.piece.type, json.piece.color, json.piece.domainPlacement, cell.color);
             if (cell.piece instanceof Bishop) {
                 cell.piece.updateStateFromJson(json.piece as Bishop);
             }

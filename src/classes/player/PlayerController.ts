@@ -38,6 +38,10 @@ export class PlayerController {
         this.activePlayers = this.activePlayers.filter(activePlayer => player !== activePlayer);
     }
 
+    getPlayerInControl(piece: Piece): Player | undefined {
+        return this.activePlayers.find(player => player.canControlPiece(piece))
+    }
+
     updateStateFromJson(json: PlayerController): PlayerController {
         const controller = new PlayerController([], 0);
         controller.activePlayers = json.activePlayers.map(playerJson => Player.updateStateFromJson(playerJson));

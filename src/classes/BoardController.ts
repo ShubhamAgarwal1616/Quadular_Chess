@@ -80,7 +80,6 @@ export class BoardController {
 
     movePiece(sourceCell: Cell, targetCell: Cell) {
         this.board.movePiece(sourceCell, targetCell)
-        // TODO: implement king killing
     }
 
     promotePawn(cell: Cell, type: PieceType) {
@@ -98,7 +97,7 @@ export class BoardController {
 
     updateStateFromJson(json: BoardController): BoardController {
         const controller = new BoardController();
-        controller.board = this.board.updateStateFromJson(json.board);
+        controller.board = QuadularBoard.updateStateFromJson(json.board);
         return controller;
     }
 }

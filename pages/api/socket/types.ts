@@ -5,7 +5,7 @@ import {NextApiResponse} from "next";
 import {DomainColor, SoundType} from "../../../src/classes/constants";
 import {BoardController} from "../../../src/classes/BoardController";
 import {PlayerController} from "../../../src/classes/player/PlayerController";
-import {Player} from "../../../src/classes/player/Player";
+import {Cell} from "../../../src/classes/Cell";
 
 interface SocketServer extends HTTPServer {
     io?: Server | undefined
@@ -34,7 +34,8 @@ export interface GameState {
     boardController: BoardController;
     playerController: PlayerController;
     roomId: string;
-    message: string | null,
-    lastMovePos: number[][],
-    soundType: SoundType,
+    message: string | null;
+    lastMovePos: number[][];
+    soundType: SoundType;
+    pawnPromotionCell: Cell | null;
 }
