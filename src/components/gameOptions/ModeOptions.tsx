@@ -11,8 +11,8 @@ export const ModeOptions: FC<ModeOptionsProps> = ({setMode, errorMessage}) => {
     return (
         <>
             <h2>Select Mode</h2>
-            <OptionButton textOption handleClick={() => setMode(GameMode.ONLINE)}>{'Online'}</OptionButton>
-            <OptionButton textOption handleClick={() => setMode(GameMode.OFFLINE)}>{'Offline'}</OptionButton>
+            <OptionButton textOption handleClick={() => setMode(GameMode.ONLINE)}>{'Remote'}</OptionButton>
+            <OptionButton textOption handleClick={() => setMode(GameMode.OFFLINE)}>{'NearBy'}</OptionButton>
             {errorMessage && <div>{errorMessage}</div>}
         </>
     )
