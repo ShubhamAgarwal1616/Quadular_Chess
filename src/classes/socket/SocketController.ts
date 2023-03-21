@@ -43,12 +43,12 @@ export class SocketController {
     }
 
     joinRoom(data: RoomData, hosting: boolean | null): Promise<boolean> {
-        this.maxPlayerCount = data.maxPlayerCount;
         this.isHost = hosting;
         this.roomId = data.roomId;
         return new Promise<boolean>((resolve, reject) => {
             this.socket?.emit(hosting ? CREATE_ROOM : JOIN_ROOM, data);
-            this.socket?.on(hosting ? ROOM_CREATED : ROOM_JOINED, () => {
+            this.socket?.on(hosting ? ROOM_CREATED : ROOM_JOINED, (playerCount) => {
+                this.maxPlayerCount = playerCount;
                 resolve(true)
             });
             this.socket?.on(hosting ? CREATE_ROOM_ERROR : JOIN_ROOM_ERROR, ({errorMessage}) => {

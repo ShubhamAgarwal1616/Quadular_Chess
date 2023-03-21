@@ -39,20 +39,6 @@ export const GameOptions: FC<GameOptionsProps> = ({
         setColors(newColors);
     }
 
-    const setGameMode = (val: GameMode) => {
-        if (val === GameMode.ONLINE) {
-            socketController.connect().then(() => {
-                setMode(val);
-                setErrorMessage(null);
-                socketController.playerJoined(playerJoinedListener)
-            }).catch(() => {
-                setErrorMessage('Error occurred while connecting to server');
-            })
-        } else {
-            setMode(val);
-        }
-    }
-
     const setTimerOption = (val: number) => {
         if (mode === GameMode.OFFLINE) {
             setUpGame(colors, val, mode, false);
@@ -78,7 +64,12 @@ export const GameOptions: FC<GameOptionsProps> = ({
         if (roomId.trim().length < MinRoomIdLength) {
             setErrorMessage('Room Id should have minimum six characters');
         } else {
-            triggerJoinRoomEvent(roomId);
+            socketController.connect().then(() => {
+                socketController.playerJoined(playerJoinedListener)
+                triggerJoinRoomEvent(roomId);
+            }).catch(() => {
+                setErrorMessage('Error occurred while connecting to server');
+            })
         }
     }
 
@@ -89,9 +80,9 @@ export const GameOptions: FC<GameOptionsProps> = ({
     return (
         <div className={styles.backdrop}>
             <h1 className={styles.heading}>Quadular</h1>
-            {!playerCount && <PlayerCountOptions setPlayerCount={selectPlayerCount} />}
-            {playerCount > 0 && !mode && <ModeOptions  setMode={setGameMode} errorMessage={errorMessage} />}
+            {!mode && <ModeOptions  setMode={setMode} errorMessage={errorMessage} />}
             {displayOnlineOptions && hosting === null && <HostingOptions  setHosting={setHosting}/>}
+            {displayOfflineOptions && !playerCount && <PlayerCountOptions setPlayerCount={selectPlayerCount} />}
             {colors.length < playerCount && displayOfflineOptions && (
                 <ColorOptions count={playerCount} selectedColors={colors} addDomainColor={addDomainColor} />
             )}

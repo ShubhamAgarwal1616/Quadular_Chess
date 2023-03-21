@@ -105,10 +105,16 @@ export const GameController = () => {
 
     function checkKingKill(targetCell: Cell) {
         if (targetCell.piece?.type === PieceType.King && playerController.originalPlayerInGame(targetCell.piece)) {
-            if (boardController.canReplaceWithYoungKing(targetCell.piece))
+            if (boardController.canReplaceWithYoungKing(targetCell.piece)) {
                 boardController.replaceWithYoungKing(targetCell.piece);
-            else
+                infoMessage = 'Young King Promoted to King';
+                setMessage(infoMessage);
+            }
+            else {
                 playerController.deactivatePlayer(targetCell.piece.color);
+                infoMessage = 'Player Terminated';
+                setMessage(infoMessage);
+            }
         }
     }
 

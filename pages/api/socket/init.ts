@@ -6,6 +6,7 @@ import {RoomData, NextApiResponseWithSocket, HostSelectedOptions, GameState} fro
 import {CreateRoom} from "./CreateRoom";
 import {ShareOptionsSelected} from "./ShareOptionsSelected";
 import {ShareGameState} from "./ShareGameState";
+import {updatePlayerCountMap} from "./PlayerCountMap";
 
 const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
     if (res.socket.server.io) {
@@ -19,10 +20,13 @@ const SocketHandler = (req: NextApiRequest, res: NextApiResponseWithSocket) => {
             console.log('connection completed for socket ', socket.id)
 
             socket.on(CREATE_ROOM, (data: RoomData) => CreateRoom(data, io, socket));
-            socket.on(JOIN_ROOM, (data: RoomData) => JoinRoom(data, io, socket));
+            socket.on(JOIN_ROOM, (data: RoomData) => JoinRoom(data.roomId, io, socket));
             socket.on(SHARE_OPTIONS_SELECTED, (data: HostSelectedOptions) => ShareOptionsSelected(data, socket));
             socket.on(SHARE_GAME_STATE, (data: GameState) => ShareGameState(data, socket));
-            socket.on('disconnect', () => console.log('socket disconnected', socket.id));
+            socket.on('disconnect', () => {
+                console.log('socket disconnected', socket.id);
+                updatePlayerCountMap(io);
+            });
         })
     }
     res.end()
