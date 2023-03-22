@@ -1,5 +1,7 @@
 # Quadular Chess
 
+![](./src/assets/images/quadular.gif)
+
 ## Version info:
 
 - nodeJs version: v14.20.1
@@ -11,7 +13,14 @@
 - run `npm install` to install dependencies
 - run `npm run dev` to run the game on localhost:3000
 
-![](./src/assets/images/quadular.gif)
+### NearBy Mode:
+- Choose this mode when you want to play in a single device.
+
+### Remote Mode:
+- Choose this mode when you want to connect multiple devices.
+- run `npm run server` in a separate tab to get the server URL. Open the game in other devices using this URL which you want to connect.
+- Host a new game using one of the device, select all required options and create a room.
+- On other devices join the room using same roomId you entered while creating the room.
 
 ## Game Pieces Initial Placement:
 
@@ -30,7 +39,7 @@ The triangular cell on which the king sits when the game starts is called Throne
 <img src="./src/assets/images/throne.jpeg"  width="300" height="160">
 
 ### Domain:
-The colored squares represents a domain. A domain is not active if pieces are not set up on it while start of game in case of 2-3 players.
+The colored squares on which pieces are positioned at start of game represents a domain. A domain is not active if pieces are not set up on it while start of game in case of 2-3 players.
 
 ## Game Instructions:
 
