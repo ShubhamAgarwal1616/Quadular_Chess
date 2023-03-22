@@ -8,6 +8,7 @@ import {SocketController} from "../../classes/socket/SocketController";
 import {HostingOptions} from "./HostingOptions";
 import {ModeOptions} from "./ModeOptions";
 import {JoinRoomScreen} from "./JoinRoomScreen";
+import {HomePage} from "./HomePage";
 
 interface GameOptionsProps {
     setUpGame: (colors: Array<DomainColor>, timer: number, mode: GameMode, hosting: boolean) => void;
@@ -20,6 +21,7 @@ export const GameOptions: FC<GameOptionsProps> = ({
         socketController,
         playerJoinedListener,
     }) => {
+    const [play, setPlay] = useState<boolean>(false)
     const [playerCount, setPlayerCount] = useState<number>(0)
     const [colors, setColors] = useState<Array<DomainColor>>([])
     const [timer, setTimer] = useState<number>(0);
@@ -80,7 +82,8 @@ export const GameOptions: FC<GameOptionsProps> = ({
     return (
         <div className={styles.backdrop}>
             <h1 className={styles.heading}>Quadular</h1>
-            {!mode && <ModeOptions  setMode={setMode} errorMessage={errorMessage} />}
+            {!play && <HomePage setPlayGame={setPlay} />}
+            {play && !mode && <ModeOptions  setMode={setMode} errorMessage={errorMessage} />}
             {displayOnlineOptions && hosting === null && <HostingOptions  setHosting={setHosting}/>}
             {displayOfflineOptions && !playerCount && <PlayerCountOptions setPlayerCount={selectPlayerCount} />}
             {colors.length < playerCount && displayOfflineOptions && (
