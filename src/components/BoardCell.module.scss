@@ -1,11 +1,4 @@
-@mixin activated-cell($color) {
-  box-shadow: 0 0 3px 3px $color, 0 0 3px 3px $color;
-  z-index: 1;
-
-  @media only screen and (max-width: 524px) {
-    box-shadow: 0 0 2px 2px $color, 0 0 2px 2px $color;
-  }
-}
+@import '../mixins';
 
 .boardCell {
   width: calc(var(--boardSize) / 17);
@@ -38,25 +31,41 @@
     background-image: -webkit-linear-gradient(225deg, white 50%, rgba(0, 0, 0, 0.0) 50%);
   }
 
-  &.activatedOrangeCells {
-    @include activated-cell(var(--orangePiece));
+  &.activatedPieceOrangeCell {
+    @include activated-piece-cell(var(--orangePiece));
   }
 
-  &.activatedYellowCells {
-    @include activated-cell(var(--yellowPiece));
+  &.activatedPieceYellowCell {
+    @include activated-piece-cell(var(--yellowPiece));
   }
 
-  &.activatedWhiteCells {
-    @include activated-cell(var(--whitePiece));
+  &.activatedPieceWhiteCell {
+    @include activated-piece-cell(var(--whitePiece));
   }
 
-  &.activatedBlackCells {
-    @include activated-cell(var(--blackPiece));
+  &.activatedPieceBlackCell {
+    @include activated-piece-cell(var(--blackPiece));
+  }
+
+  &.activatedPosOrangeCell {
+    @include activated-pos-cell(var(--orangePiece));
+  }
+
+  &.activatedPosYellowCell {
+    @include activated-pos-cell(var(--yellowPiece));
+  }
+
+  &.activatedPosWhiteCell {
+    @include activated-pos-cell(var(--whitePiece));
+  }
+
+  &.activatedPosBlackCell {
+    @include activated-pos-cell(var(--blackPiece));
   }
 
   &.activePieces {
     box-shadow: 0 0 3px 3px #0ff, 0 0 3px 3px #0ff;
-    z-index: 1;
+    z-index: 2;
 
     @media only screen and (max-width: 524px) {
       box-shadow: 0 0 2px 2px #0ff;

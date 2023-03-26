@@ -43,10 +43,10 @@ export const BoardCell: FC<CellProps> = ({
 
     const getActivatedClass = (piece?: Piece | null): string => {
         switch (piece?.color) {
-            case PieceColor.ORANGE: return styles.activatedOrangeCells;
-            case PieceColor.WHITE: return styles.activatedWhiteCells;
-            case PieceColor.YELLOW: return styles.activatedYellowCells;
-            case PieceColor.BLACK: return styles.activatedBlackCells;
+            case PieceColor.ORANGE: return cell.piece ? styles.activatedPieceOrangeCell : styles.activatedPosOrangeCell;
+            case PieceColor.WHITE: return cell.piece ? styles.activatedPieceWhiteCell : styles.activatedPosWhiteCell;
+            case PieceColor.YELLOW: return cell.piece ? styles.activatedPieceYellowCell : styles.activatedPosYellowCell;
+            case PieceColor.BLACK: return cell.piece ? styles.activatedPieceBlackCell : styles.activatedPosBlackCell;
             default: return '';
         }
     }
