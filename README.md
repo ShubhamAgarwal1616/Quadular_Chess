@@ -7,6 +7,13 @@
 - nodeJs version: v14.20.1
 - npm version: 7.24.2
 
+## Improvements
+
+- Centralised Timers in online mode
+- maintining state for a game on backend side instead in frontend
+- provide functionality to connect again after disconnect via webhook
+- Refactor code to make more maintainable
+
 ## Setup instructions:
 
 - clone the repo in your machine
@@ -18,9 +25,9 @@
 
 ### Remote Mode:
 - Choose this mode when you want to connect multiple devices.
-- run `npm run server` in a separate tab to get the server URL. Open the game in other devices using this URL which you want to connect.
-- Host a new game using one of the device, select all required options and create a room.
-- On other devices join the room using same roomId you entered while creating the room.
+- Host a new game using a tab, select all required options and create a room.
+- Open other tab(to simulate another device) and go to the base URL (localhost:3000)
+- join the room using same roomId you entered while creating the room.
 
 ## Game Pieces Initial Placement:
 
