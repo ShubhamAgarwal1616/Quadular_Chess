@@ -13,6 +13,7 @@
 - maintining state for a game on backend side instead in frontend
 - provide functionality to connect again after disconnect via webhook
 - Refactor code to make more maintainable
+- use Memoization to avoid re-rendering all cells
 
 ## Setup instructions:
 
