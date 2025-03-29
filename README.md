@@ -7,7 +7,7 @@
 - nodeJs version: v14.20.1
 - npm version: 7.24.2
 
-## Improvements
+## Improvements In Future
 
 - Centralised Timers in online mode
 - maintining state for a game on backend side instead in frontend
